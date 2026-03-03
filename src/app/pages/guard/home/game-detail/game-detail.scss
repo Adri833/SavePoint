@@ -4,7 +4,6 @@
   overflow-y: hidden;
   overflow-x: hidden;
   color: #fff;
-  font-family: 'Inter', sans-serif;
   z-index: 0;
 
   /* ---------- BACKGROUND ---------- */
@@ -221,7 +220,7 @@
     }
 
     /* ---------- SKELETON ---------- */
-    .skeleton {
+    &.skeleton {
       pointer-events: none;
 
       [class^='sk-'] {

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { GamesService } from '../../../services/games.service';
 import { GameDTO } from '../../../utils/game-mapper';
 import { HorizontalScrollSection } from '../../../shared/components/horizontal-scroll-section/horizontal-scroll-section';
-import { SocialIcon } from "../../../shared/components/social-icon/social-icon";
+import { SocialIcon } from '../../../shared/components/social-icon/social-icon';
 import { Navbar } from '../../../shared/components/navbar-landing/navbar';
 import { Button } from '../../../shared/components/button/button';
 
@@ -19,7 +19,7 @@ export class Landing {
   trendingGames: GameDTO[] = [];
   upComingGames: GameDTO[] = [];
   thisWeekGames: GameDTO[] = [];
-  
+
   constructor(
     private router: Router,
     private gamesService: GamesService,
@@ -41,6 +41,14 @@ export class Landing {
       this.thisWeekGames = games;
       this.cdr.detectChanges();
     });
+  }
+
+  get thisYearLabel(): string {
+    return String(new Date().getFullYear());
+  }
+  
+  get lastYearLabel(): string {
+    return String(new Date().getFullYear() - 1);
   }
 
   goToLogin() {

@@ -32,6 +32,10 @@ export class HorizontalScrollSection implements AfterViewInit, OnChanges {
 
   showLeftButton = false;
   showRightButton = false;
+  skeletonItems = Array(8).fill(0);
+
+  private observer!: IntersectionObserver;
+  private animationTriggered = false;
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
   @ViewChild('section') section!: ElementRef<HTMLElement>;
@@ -39,60 +43,72 @@ export class HorizontalScrollSection implements AfterViewInit, OnChanges {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
-    this.attachScrollListener();
     this.observeSection();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['items'] && this.scrollContainer) {
-      setTimeout(() => this.updateScrollButtons());
+    if (changes['items']?.currentValue?.length > 0) {
+      setTimeout(() => {
+        this.attachScrollListener();
+        this.triggerAnimationIfVisible();
+      }, 50);
     }
   }
 
   scrollLeft() {
-    this.scrollContainer.nativeElement.scrollBy({
-      left: -920,
-      behavior: 'smooth',
-    });
+    this.scrollContainer.nativeElement.scrollBy({ left: -920, behavior: 'smooth' });
   }
 
   scrollRight() {
-    this.scrollContainer.nativeElement.scrollBy({
-      left: 920,
-      behavior: 'smooth',
-    });
+    this.scrollContainer.nativeElement.scrollBy({ left: 920, behavior: 'smooth' });
   }
 
   private attachScrollListener() {
+    if (!this.scrollContainer) return;
     const container = this.scrollContainer.nativeElement;
-
     container.addEventListener('scroll', () => this.updateScrollButtons());
-
-    setTimeout(() => this.updateScrollButtons());
+    this.updateScrollButtons();
   }
 
   private updateScrollButtons() {
     const container = this.scrollContainer.nativeElement;
-
     this.showLeftButton = container.scrollLeft > 0;
     this.showRightButton =
       container.scrollWidth > container.clientWidth &&
       container.scrollLeft < container.scrollWidth - container.clientWidth;
-
     this.cdr.detectChanges();
   }
 
   private observeSection() {
-    const observer = new IntersectionObserver(
+    const el = this.section.nativeElement;
+
+    this.observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          this.section.nativeElement.classList.add('is-visible');
-          observer.disconnect();
+        if (entry.isIntersecting && !this.animationTriggered) {
+          this.triggerAnimation();
         }
       },
-      { threshold: 0.3 },
+      { threshold: 0.1 },
     );
 
-    observer.observe(this.section.nativeElement);
+    this.observer.observe(el);
+  }
+
+  private triggerAnimationIfVisible() {
+    if (this.animationTriggered) return;
+
+    const el = this.section.nativeElement;
+    const rect = el.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+    if (isVisible) {
+      this.triggerAnimation();
+    }
+  }
+
+  private triggerAnimation() {
+    this.animationTriggered = true;
+    this.section.nativeElement.classList.add('is-visible');
+    this.observer?.disconnect();
   }
 }

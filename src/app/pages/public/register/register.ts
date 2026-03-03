@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { Logo } from '../../../shared/components/logo/logo';
 import { InputFieldComponent } from '../../../shared/components/input-field/input-field';
+import { GoogleButton } from "../../../shared/components/google-button/google-button";
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, Logo, InputFieldComponent],
+  imports: [CommonModule, FormsModule, Logo, InputFieldComponent, GoogleButton],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
@@ -56,10 +57,25 @@ export class Register {
         return;
       }
 
-      await this.router.navigate(['/home']);
+      await this.router.navigate(['/home/biblioteca']);
     } catch (error: any) {
       this.error = this.mapRegisterError(error);
     } finally {
+      this.loading = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  async loginWithGoogle() {
+    if (this.loading) return;
+    this.loading = true;
+    this.error = null;
+    this.cdr.detectChanges();
+
+    try {
+      await this.authService.loginWithGoogle();
+    } catch (error: any) {
+      this.error = 'Error al iniciar sesión con Google. Inténtalo de nuevo.';
       this.loading = false;
       this.cdr.detectChanges();
     }

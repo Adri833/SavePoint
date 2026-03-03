@@ -5,7 +5,7 @@ import { RawgService } from './rawg.service';
 import { GameDTO } from '../utils/game-mapper';
 
 const CACHE_PREFIX = 'game_cache_';
-const CACHE_TTL_MS = 1000 * 60 * 60; // 1 hora
+const CACHE_TTL_MS = 1000 * 60 * 60; 
 
 interface CachedEntry<T> {
   data: T;
@@ -30,7 +30,6 @@ export class GamesService {
     try {
       localStorage.setItem(key, JSON.stringify(entry));
     } catch {
-      // localStorage lleno — limpiamos entradas expiradas y reintentamos
       this.purgeExpired();
       try {
         localStorage.setItem(key, JSON.stringify(entry));

@@ -11,9 +11,46 @@
       </h1>
 
       <ul class="hero-features">
-        <li>📚 Organiza toda tu biblioteca en un solo lugar</li>
-        <li>⭐ Consulta el proceso de tus juegos</li>
-        <li>🧠 Descubre opiniones y aportes de la comunidad</li>
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+          Organiza toda tu biblioteca en un solo lugar
+        </li>
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          Consulta el progreso de tus juegos
+        </li>
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          Descubre opiniones y aportes de la comunidad
+        </li>
       </ul>
 
       <div class="hero-actions">
@@ -32,7 +69,7 @@
   <app-horizontal-scroll-section title="Nuevo esta semana" [items]="thisWeekGames">
   </app-horizontal-scroll-section>
 
-  <app-horizontal-scroll-section title="Populares en 2025" [items]="trendingGames">
+  <app-horizontal-scroll-section [title]="'Populares en ' + lastYearLabel" [items]="trendingGames">
   </app-horizontal-scroll-section>
 
   <!-- FOOTER -->
@@ -69,7 +106,7 @@
 
     <!-- Sección inferior -->
     <div class="footer-bottom">
-      <span>© 2026 SavePoint. Todos los derechos reservados.</span>
+      <span>© {{ thisYearLabel }} SavePoint. Todos los derechos reservados.</span>
     </div>
   </footer>
 </div>

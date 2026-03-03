@@ -7,17 +7,27 @@
     }
 
     <div class="games-scroll" #scrollContainer>
-      @for (item of items; track $index) {
-        <div
-          class="game-card"
-          [style.transitionDelay.ms]="$index * 80"
-          (click)="itemClick.emit(item)"
-        >
-          <div class="image-wrapper">
-            <img [src]="item.background_image" [alt]="item.name" />
-            <div class="game-title">{{ item.name }}</div>
+      <!-- SKELETON -->
+      @if (items.length === 0) {
+        @for (i of skeletonItems; track $index) {
+          <div class="skeleton-card"></div>
+        }
+      }
+
+      <!-- CONTENIDO REAL -->
+      @if (items.length > 0) {
+        @for (item of items; track $index) {
+          <div
+            class="game-card"
+            [style.transitionDelay.ms]="$index * 80"
+            (click)="itemClick.emit(item)"
+          >
+            <div class="image-wrapper">
+              <img [src]="item.background_image" [alt]="item.name" />
+              <div class="game-title">{{ item.name }}</div>
+            </div>
           </div>
-        </div>
+        }
       }
     </div>
 

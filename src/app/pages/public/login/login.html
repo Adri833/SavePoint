@@ -27,15 +27,36 @@
           [disabled]="loading"
         />
 
-        <p *ngIf="error" class="error-text">
-          {{ error }}
-        </p>
+        <div class="forgot-password">
+          <a (click)="forgotPassword()">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        @if (error) {
+          <div class="error-box">
+            <img src="/error.svg" alt="Error" />
+            <span>{{ error }}</span>
+          </div>
+        }
+
+        @if (successMessage) {
+          <div class="success-box">
+            <span>{{ successMessage }}</span>
+          </div>
+        }
 
         <button type="submit" [disabled]="loading" class="submit-btn">
           <span class="btn-text" [class.hidden]="loading"> Entrar </span>
 
-          <span class="spinner" *ngIf="loading"></span>
+          @if (loading) {
+            <span class="spinner"></span>
+          }
         </button>
+
+        <div class="divider">
+          <span>o</span>
+        </div>
+
+        <app-google-button [disabled]="loading" (clicked)="loginWithGoogle()" />
       </form>
     </div>
   </div>
