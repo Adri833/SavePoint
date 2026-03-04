@@ -21,5 +21,5 @@ export interface Playthrough {
   game_name: string;
   game_background: string;
   game_slug?: string;
-  game_released?: Date | null;
+  game_released?: string | null;
 }

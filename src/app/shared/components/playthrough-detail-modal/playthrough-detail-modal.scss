@@ -25,6 +25,29 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+
+  .modal-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #9a9ab5;
+    margin: 0;
+  }
 }
 
 .modal-body {

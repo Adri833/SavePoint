@@ -54,6 +54,7 @@ export class Playthroughs implements OnInit {
           const p = this.playthroughs[i];
           p.game_name = game.name;
           p.game_background = game.background_image ?? '';
+          p.game_released = game.released ?? '';
         });
 
         this.playthroughs.sort(

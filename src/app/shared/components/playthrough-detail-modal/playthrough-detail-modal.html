@@ -2,7 +2,10 @@
 
 <div class="modal">
   <div class="modal-header">
-    <h2>{{ playthrough.game_name }}</h2>
+    <div class="modal-header-left">
+      <h2>{{ playthrough.game_name }}</h2>
+      <h3>{{ formatDate(playthrough.game_released || '') }}</h3>
+    </div>
     <app-close-button (close)="onClose()"></app-close-button>
   </div>
 

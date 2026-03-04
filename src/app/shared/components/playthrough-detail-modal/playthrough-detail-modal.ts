@@ -77,4 +77,13 @@ export class PlaythroughDetailModal {
     this.close.emit();
     this.deleted.emit();
   }
+
+  formatDate(date: string): string {
+    if (!date) return '';
+    return new Date(date).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
 }
