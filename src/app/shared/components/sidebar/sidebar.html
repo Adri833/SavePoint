@@ -1,10 +1,6 @@
 <aside class="sidebar" [class.collapsed]="collapsed">
   <div class="sidebar-header">
-    <button
-      class="collapse-btn"
-      [class.expanded]="!collapsed"
-      (click)="toggle()"
-    ></button>
+    <button class="collapse-btn" [class.expanded]="!collapsed" (click)="toggle()"></button>
   </div>
 
   <nav class="menu">
@@ -30,4 +26,12 @@
     >
     </app-sidebar-item>
   </nav>
+
+  <div class="sidebar-footer">
+    <button class="logout-btn" (click)="logout()">
+      @if (!collapsed) {
+        <span>Cerrar sesión</span>
+      }
+    </button>
+  </div>
 </aside>
