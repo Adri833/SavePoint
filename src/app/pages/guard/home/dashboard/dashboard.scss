@@ -132,4 +132,8 @@
     padding: 12px 12px 0;
     justify-content: center;
   }
+
+  ::ng-deep app-platinum-stats img {
+    max-width: 100px;
+  }
 }

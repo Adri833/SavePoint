@@ -73,21 +73,34 @@ export class Playthroughs implements OnInit {
   }
 
   private extractYears(playthroughs: Playthrough[]): number[] {
+    const currentYear = new Date().getFullYear();
     const yearSet = new Set<number>();
+
     playthroughs.forEach((p) => {
-      const start = new Date(p.started_at).getFullYear();
-      const end = p.ended_at ? new Date(p.ended_at).getFullYear() : new Date().getFullYear();
-      for (let y = start; y <= end; y++) yearSet.add(y);
+      if (p.ended_at) {
+        yearSet.add(p.ended_at.getFullYear());
+      } else {
+        for (let y = p.started_at.getFullYear(); y <= currentYear; y++) {
+          yearSet.add(y);
+        }
+      }
     });
+
     return Array.from(yearSet).sort((a, b) => b - a);
   }
 
   get filteredPlaythroughs(): Playthrough[] {
-    return this.playthroughs.filter((p) => {
-      const start = new Date(p.started_at).getFullYear();
-      const end = p.ended_at ? new Date(p.ended_at).getFullYear() : new Date().getFullYear();
+    const currentYear = new Date().getFullYear();
 
-      const inYear = start <= this.selectedYear && end >= this.selectedYear;
+    return this.playthroughs.filter((p) => {
+      let inYear: boolean;
+
+      if (p.ended_at) {
+        inYear = p.ended_at.getFullYear() === this.selectedYear;
+      } else {
+        inYear =
+          p.started_at.getFullYear() <= this.selectedYear && this.selectedYear <= currentYear;
+      }
 
       let statusMatch = true;
       if (this.selectedStatus !== 'all') {

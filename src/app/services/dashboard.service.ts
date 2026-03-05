@@ -80,25 +80,29 @@ export class DashboardService {
   /* ========== HELPERS ========== */
 
   private filterByYear(playthroughs: Playthrough[], year: number) {
-    return playthroughs.filter((p) => {
-      const startYear = p.started_at.getFullYear();
-      const endYear = p.ended_at?.getFullYear();
+    const currentYear = new Date().getFullYear();
 
-      return startYear <= year && (!endYear || endYear >= year);
+    return playthroughs.filter((p) => {
+      if (p.ended_at) {
+        return p.ended_at.getFullYear() === year;
+      } else {
+        return p.started_at.getFullYear() <= year && year <= currentYear;
+      }
     });
   }
 
   async getAvailableYears(): Promise<number[]> {
     const playthroughs = await this.playthroughService.getAllByUser();
-
+    const currentYear = new Date().getFullYear();
     const years = new Set<number>();
 
     playthroughs.forEach((p) => {
-      const startYear = p.started_at.getFullYear();
-      const endYear = p.ended_at?.getFullYear() ?? new Date().getFullYear();
-
-      for (let y = startYear; y <= endYear; y++) {
-        years.add(y);
+      if (p.ended_at) {
+        years.add(p.ended_at.getFullYear());
+      } else {
+        for (let y = p.started_at.getFullYear(); y <= currentYear; y++) {
+          years.add(y);
+        }
       }
     });
 
