@@ -1,7 +1,8 @@
+﻿@use '../../../../styles/colors' as *;
 .landing {
   min-height: 100vh;
-  background: radial-gradient(circle at top, #1a1a2e, #0f0f14);
-  color: #ffffff;
+  background: radial-gradient(circle at top, $color-bg-deep, $color-bg-base);
+  color: $color-white;
 }
 
 /* HERO */
@@ -21,8 +22,8 @@
 }
 
 .hero-content h1 span {
-  color: #7c5cff;
-  text-shadow: 0 0 clamp(6px, 1vw, 11px) rgba(124, 92, 255, 0.5);
+  color: $color-primary;
+  text-shadow: 0 0 clamp(6px, 1vw, 11px) $color-primary-50;
 }
 
 .hero-features {
@@ -35,7 +36,7 @@
     align-items: center;
     gap: 14px;
     font-size: clamp(14px, 2vw, 18px);
-    color: #cfcfe6;
+    color: $color-text-muted;
     margin-bottom: clamp(10px, 1.5vw, 14px);
   }
 
@@ -43,7 +44,7 @@
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    color: #6c63ff;
+    color: $color-primary-faint;
   }
 }
 
@@ -54,7 +55,7 @@
 .hero-media img {
   width: 100%;
   border-radius: clamp(12px, 2vw, 16px);
-  box-shadow: 0 0 clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 clamp(32px, 4vw, 48px) $color-overlay-black-60;
 }
 
 /* FOOTER */
@@ -64,9 +65,9 @@
   margin-top: clamp(1px, 1vw, 5px);
 
   .footer-top {
-    background: linear-gradient(135deg, #0f0f14, #1a1a2e);
+    background: linear-gradient(135deg, $color-bg-base, $color-bg-deep);
     padding: clamp(20px, 3vw, 40px);
-    color: #ffffff;
+    color: $color-white;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -88,7 +89,7 @@
 
     p {
       font-size: clamp(14px, 1.5vw, 18px);
-      color: #cfcfe6;
+      color: $color-text-muted;
       margin: 0;
     }
 
@@ -100,10 +101,10 @@
   }
 
   .footer-bottom {
-    background-color: #7c5cff;
+    background-color: $color-primary;
     text-align: center;
     padding: clamp(12px, 1.5vw, 18px);
-    color: #ffffff;
+    color: $color-white;
     font-size: clamp(12px, 1vw, 14px);
   }
 }

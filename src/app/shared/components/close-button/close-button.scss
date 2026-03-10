@@ -1,5 +1,6 @@
+﻿@use '../../../../styles/colors' as *;
 body {
-  background: #121212;
+  background: $color-bg-darker;
 }
 
 $button-size: 40px;

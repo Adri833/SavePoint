@@ -1,3 +1,4 @@
+﻿@use '../../../../styles/colors' as *;
 .platinum-card {
   width: 100%;
   height: 100%;
@@ -35,7 +36,7 @@
 .label {
   margin-top: 8px;
   font-size: clamp(1rem, 1.5vw, 4rem);
-  color: #aaa;
+  color: $color-text-disabled;
 }
 
 /* ===== RIGHT SIDE ===== */
@@ -64,7 +65,7 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: radial-gradient(circle, #d4d4f0 0%, #a6ffff 50%, #d4d4f0 100%);
+  background: radial-gradient(circle, $color-text-secondary 0%, $color-cyan 50%, $color-text-secondary 100%);
   opacity: calc(var(--glow-intensity, 0) * 0.04);
   transform: scale(calc(1 + var(--glow-intensity, 0) * 0.04));
   transition:
@@ -78,7 +79,7 @@
 
 /* ===== NO DATA ===== */
 .no-data {
-  color: #666;
+  color: $color-text-dim;
 }
 
 .trophy-no-data {
@@ -91,7 +92,7 @@
 .label-skeleton,
 .skeleton-icon {
   border-radius: 4px;
-  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  background: linear-gradient(90deg, $color-gray-dark 25%, $color-gray-mid2 50%, $color-gray-dark 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }

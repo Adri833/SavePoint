@@ -1,7 +1,8 @@
+﻿@use '../../../../styles/colors' as *;
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 10, 18, 0.75);
+  background: $color-bg-overlay-75;
   backdrop-filter: blur(6px);
   z-index: 100;
   animation: fadeIn 0.2s ease forwards;
@@ -13,11 +14,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: min(600px, 90%);
-  background: #141421;
+  background: $color-bg-surface;
   border-radius: 16px;
   padding: 2rem;
   z-index: 101;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 40px $color-overlay-black-60;
   animation: scaleIn 0.25s ease forwards;
 }
 
@@ -45,7 +46,7 @@
   h3 {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #9a9ab5;
+    color: $color-text-faint;
     margin: 0;
   }
 }
@@ -73,13 +74,13 @@
 }
 
 .btn.primary {
-  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  background: linear-gradient(135deg, $color-primary-faint, $color-text-purple);
   color: white;
 }
 
 .btn.primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(108, 92, 231, 0.4);
+  box-shadow: 0 6px 16px $color-purple-dark-40;
 }
 
 @keyframes fadeIn {

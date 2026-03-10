@@ -1,7 +1,8 @@
+﻿@use '../../../../styles/colors' as *;
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 10, 18, 0.75);
+  background: $color-bg-overlay-75;
   backdrop-filter: blur(6px);
   z-index: 200;
   animation: fadeIn 0.2s ease forwards;
@@ -13,18 +14,18 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: min(420px, 90%);
-  background: #141421;
+  background: $color-bg-surface;
   border-radius: 16px;
   padding: 2rem;
   z-index: 201;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 40px $color-overlay-black-60;
   animation: scaleIn 0.25s ease forwards;
   text-align: center;
 }
 
 .message {
   margin: 1rem 0 2rem 0;
-  color: #bbb;
+  color: $color-text-placeholder;
 }
 
 .actions {
@@ -44,22 +45,22 @@
 }
 
 .btn.secondary {
-  background: #2a2a3a;
-  color: #ddd;
+  background: $color-bg-card-alt;
+  color: $color-text-gray;
 }
 
 .btn.secondary:hover {
-  background: #35354a;
+  background: $color-bg-alt2;
 }
 
 .btn.danger {
-  background: #a72b45;
+  background: $color-danger-darker;
   color: white;
   transition: background 0.2s ease;
 }
 
 .btn.danger:hover {
-  background: #842236;
+  background: $color-danger-darkest;
 }
 
 @keyframes fadeIn {

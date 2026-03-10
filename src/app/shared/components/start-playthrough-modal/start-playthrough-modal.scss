@@ -1,3 +1,4 @@
+﻿@use '../../../../styles/colors' as *;
 /* ---------- OVERLAY ---------- */
 .overlay {
   position: fixed;
@@ -5,7 +6,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(10, 10, 18, 0.75);
+  background: $color-bg-overlay-75;
   backdrop-filter: blur(4px);
   z-index: 100;
   display: flex;
@@ -22,13 +23,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -45%) scale(0.95);
-  background: #141422;
+  background: $color-bg-surface;
   padding: 2rem;
   border-radius: 16px;
   width: 400px;
   max-width: 90%;
   z-index: 101;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px $color-overlay-black-50;
 
   opacity: 0;
   animation: modalEnter 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
@@ -41,7 +42,7 @@
     display: block;
     margin-bottom: 1rem;
     font-size: 0.9rem;
-    color: #aaa;
+    color: $color-text-disabled;
 
     input,
     textarea {
@@ -49,9 +50,9 @@
       margin-top: 0.4rem;
       padding: 0.6rem;
       border-radius: 8px;
-      border: 1px solid #2a2a40;
-      background: #1e1e2f;
-      color: #fff;
+      border: 1px solid $color-bg-card;
+      background: $color-bg-surface-alt;
+      color: $color-white;
       resize: none;
     }
   }
@@ -73,12 +74,12 @@
 
     .cancel {
       background: transparent;
-      color: #aaa;
+      color: $color-text-disabled;
     }
 
     button[type='submit'] {
-      background: #fff;
-      color: #141422;
+      background: $color-white;
+      color: $color-bg-surface;
       position: relative;
 
       .btn-content {
@@ -91,8 +92,8 @@
       .spinner {
         width: 16px;
         height: 16px;
-        border: 2px solid rgba(20, 20, 34, 0.2);
-        border-top: 2px solid #141422;
+        border: 2px solid $color-bg-surface-20;
+        border-top: 2px solid $color-bg-surface;
         border-radius: 50%;
         animation: spin 0.6s linear infinite;
       }
@@ -109,41 +110,41 @@
   }
 
   .error {
-    color: #ff6b6b;
+    color: $color-danger-alt;
     font-size: 0.85rem;
   }
 
   .flatpickr-calendar {
-    background: #1e1e2f;
-    border: 1px solid #2a2a40;
+    background: $color-bg-surface-alt;
+    border: 1px solid $color-bg-card;
     border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 60px $color-overlay-black-50;
   }
 
   /* ---------- CALENDAR ---------- */
 
   .flatpickr-day {
-    color: #e6e6ff;
+    color: $color-text-primary;
 
     &.selected,
     &.startRange,
     &.endRange {
-      background: #7c5cff;
-      border-color: #7c5cff;
+      background: $color-primary;
+      border-color: $color-primary;
     }
 
     &:hover {
-      background: rgba(124, 92, 255, 0.25);
+      background: $color-primary-25;
     }
   }
 
   .flatpickr-months {
-    background: #141422;
-    border-bottom: 1px solid #2a2a40;
+    background: $color-bg-surface;
+    border-bottom: 1px solid $color-bg-card;
   }
 
   .flatpickr-weekdays {
-    background: #141422;
+    background: $color-bg-surface;
   }
 }
 @keyframes spin {

@@ -1,3 +1,4 @@
+﻿@use '../../../../styles/colors' as *;
 /* ---------------------- OVERLAY ---------------------- */
 .search-overlay {
   position: fixed;
@@ -5,7 +6,7 @@
   left: 0;
   width: 100%;
   height: calc(100vh - 72px);
-  background: rgba(10, 10, 18, 0.75);
+  background: $color-bg-overlay-75;
   backdrop-filter: blur(6px);
   z-index: 50;
   display: flex;
@@ -42,14 +43,14 @@
 .results {
   width: 100%;
   max-width: 820px;
-  background: linear-gradient(180deg, #17172d, #121222);
+  background: linear-gradient(180deg, $color-bg-subtle, $color-bg-dark);
   border-radius: 16px;
   padding: 24px 24px 32px;
   margin-bottom: 32px;
 
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.6),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    0 20px 60px $color-overlay-black-60,
+    inset 0 0 0 1px $color-overlay-white-4;
 
   /* Animación de fade */
   animation: fadeIn 0.3s ease forwards;
@@ -63,7 +64,7 @@
 }
 
 .game-card {
-  background: #1c1b30;
+  background: $color-bg-deep2;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
@@ -75,8 +76,8 @@
   animation: cardIn 0.3s ease forwards;
 
   box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    0 8px 24px $color-overlay-black-50,
+    inset 0 0 0 1px $color-overlay-white-3;
 
   &:hover {
     transform: scale(1.035);
@@ -100,7 +101,7 @@
     h4 {
       font-size: 0.9rem;
       font-weight: 600;
-      color: #ffffff;
+      color: $color-white;
       margin: 0;
       line-height: 1.2;
       white-space: nowrap;
@@ -135,15 +136,15 @@
   align-items: center;
   gap: 12px;
   padding: 48px 0;
-  color: #b8b8ff;
+  color: $color-text-accent;
   font-size: 0.9rem;
 }
 
 .spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid rgba(124, 92, 255, 0.2);
-  border-top-color: #7c5cff;
+  border: 3px solid $color-primary-20;
+  border-top-color: $color-primary;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -159,7 +160,7 @@
   text-align: center;
   padding: 32px 0;
   font-size: 0.9rem;
-  color: #9a9ab5;
+  color: $color-text-faint;
   opacity: 0.8;
 }
 
