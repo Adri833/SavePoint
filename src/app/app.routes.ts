@@ -28,20 +28,33 @@ export const routes: Routes = [
     canActivate: [GuestGuard],
     component: Register,
   },
-  { 
+  {
     path: 'reset-password',
-    component: ResetPassword 
+    component: ResetPassword,
   },
-  { path: 'auth/callback',
+  {
+    path: 'auth/callback',
     component: AuthCallback,
   },
+  {
+    path: 'u/:username',
+    loadComponent: () =>
+      import('./pages/public/user-profile/user-profile').then((m) => m.UserProfile),
+  },
+  {
+    path: 'u/:username/playthroughs',
+    loadComponent: () =>
+      import('./pages/public/user-playthroughs/user-playthroughs').then((m) => m.Userplaythroughs),
+  },
+
+  // ========== HOME (autenticado) ==========
   {
     path: 'home',
     canActivate: [AuthGuard],
     component: HomeLayout,
     children: [
       {
-        path: 'biblioteca',
+        path: 'playthroughs',
         loadComponent: () =>
           import('./pages/guard/home/playthroughs/playtroughs').then((m) => m.Playthroughs),
       },

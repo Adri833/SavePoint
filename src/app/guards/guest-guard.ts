@@ -10,7 +10,7 @@ export class GuestGuard implements CanActivate {
     const { data } = await supabase.auth.getSession();
 
     if (data.session) {
-      this.router.navigate(['/home/biblioteca']);
+      this.router.navigate(['/home/playthroughs']);
       return false;
     }
 

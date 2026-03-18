@@ -1,0 +1,89 @@
+<div class="user-profile-page">
+  @if (loading) {
+    <div class="profile-hero">
+      <div class="hero-main">
+        <div class="avatar-wrap">
+          <div class="avatar skeleton"></div>
+        </div>
+        <div class="hero-info">
+          <div class="skeleton skeleton--text skeleton--username"></div>
+          <div class="skeleton skeleton--text skeleton--joined"></div>
+          <div class="skeleton skeleton--text skeleton--bio-1"></div>
+          <div class="skeleton skeleton--text skeleton--bio-2"></div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (!loading && error) {
+    <div class="not-found">
+      <img class="not-found-logo" src="/logo_savepoint_sinfondo.png" alt="SavePoint" />
+      <h1 class="not-found-title">Perfil no encontrado</h1>
+      <p class="not-found-desc">{{ error }}</p>
+      <a class="not-found-btn" routerLink="/">Volver al inicio</a>
+    </div>
+  }
+
+  @if (!loading && profile) {
+    <div class="profile-hero">
+      <div class="hero-main">
+        <div class="avatar-wrap">
+          @if (profile.avatar_url) {
+            <img class="avatar avatar--img" [src]="profile.avatar_url" [alt]="profile.username" />
+          } @else {
+            <div class="avatar">{{ avatarInitial }}</div>
+          }
+        </div>
+
+        <div class="hero-info">
+          <div class="hero-username">{{ profile.username }}</div>
+          <div class="hero-joined">Miembro desde {{ memberSince }}</div>
+
+          <p class="hero-bio" [class.is-placeholder]="!profile.bio">
+            {{ profile.bio ?? 'Sin bio todavía.' }}
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn btn--no-slide" (click)="goToHome()">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
+              <path d="M9 21V12h6v9" />
+            </svg>
+            Inicio
+          </button>
+          <button class="btn" (click)="goToBiblioteca()">
+            Ver biblioteca
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M3 8h10M9 4l4 4-4 4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider" />
+
+    <app-favorite-games [userId]="profile.id" [readonly]="true" />
+
+    <hr class="section-divider" />
+
+    <app-recent-platinum [userId]="profile.id" />
+  }
+</div>

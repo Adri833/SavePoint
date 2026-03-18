@@ -14,8 +14,14 @@
 .favorites-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
+  gap: 8px;
   margin-bottom: 14px;
+}
+
+.favorites-icon {
+  width: 32px;
+  height: 32px;
 }
 
 .favorites-title {

@@ -23,13 +23,13 @@ export class AuthCallback implements OnInit {
     const { data } = await supabase.auth.getSession();
 
     if (data.session) {
-      this.router.navigate(['/home/biblioteca']);
+      this.router.navigate(['/home/playthroughs']);
       return;
     }
 
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        this.router.navigate(['/home/biblioteca']);
+        this.router.navigate(['/home/playthroughs']);
       } else if (!session) {
         this.router.navigate(['/landing']);
       }

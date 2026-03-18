@@ -4,7 +4,7 @@ import { Profile } from '../../../../models/profile.model';
 import { ProfileService } from '../../../../services/profile.service';
 import { EditProfileModal } from '../../../../shared/components/edit-profile-modal/edit-profile-modal';
 import { FavoriteGamesComponent } from '../../../../shared/components/favorite-games/favorite-games';
-import { RecentPlatinum } from "../../../../shared/components/recent-platinum/recent-platinum";
+import { RecentPlatinum } from '../../../../shared/components/recent-platinum/recent-platinum';
 
 @Component({
   selector: 'app-profile',
@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit {
   error: string | null = null;
   showEditModal = false;
   linkCopied = false;
+  togglingPublic = false;
 
   constructor(
     private profileService: ProfileService,
@@ -67,6 +68,22 @@ export class ProfileComponent implements OnInit {
     this.linkCopied = true;
     this.cdr.detectChanges();
     setTimeout(() => (this.linkCopied = false), 2000);
+  }
+
+  async togglePublic() {
+    if (!this.profile || this.togglingPublic) return;
+
+    this.togglingPublic = true;
+    this.cdr.detectChanges();
+
+    try {
+      this.profile = await this.profileService.togglePublic(this.profile.is_public);
+    } catch (err: any) {
+      this.error = err.message ?? 'Error al cambiar la visibilidad';
+    } finally {
+      this.togglingPublic = false;
+      this.cdr.detectChanges();
+    }
   }
 
   /* ========== HELPERS ========== */

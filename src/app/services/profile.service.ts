@@ -6,7 +6,6 @@ import { Profile, UpdateProfilePayload } from '../models/profile.model';
   providedIn: 'root',
 })
 export class ProfileService {
-
   private mapProfile(data: any): Profile {
     return {
       ...data,
@@ -25,15 +24,33 @@ export class ProfileService {
   async getOwnProfile(): Promise<Profile> {
     const userId = await this.getUserId();
 
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
+    const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
 
     if (error) throw error;
 
     return this.mapProfile(data);
+  }
+
+  async getProfileByUsername(username: string): Promise<Profile | null> {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('username', username)
+      .eq('is_public', true)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data ? this.mapProfile(data) : null;
+  }
+
+  async isUsernameAvailable(username: string): Promise<boolean> {
+    const { data } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('username', username)
+      .maybeSingle();
+
+    return data === null;
   }
 
   /* ========== UPDATE ========== */
@@ -43,9 +60,12 @@ export class ProfileService {
 
     if (payload.username !== undefined) {
       const trimmed = payload.username.trim();
-      if (trimmed.length < 3) throw new Error('El nombre de usuario debe tener al menos 3 caracteres');
-      if (trimmed.length > 30) throw new Error('El nombre de usuario no puede superar los 30 caracteres');
-      if (!/^[a-zA-Z0-9_]+$/.test(trimmed)) throw new Error('El nombre de usuario solo puede contener letras, números y guiones bajos');
+      if (trimmed.length < 1)
+        throw new Error('El nombre de usuario debe tener al menos 1 caracteres');
+      if (trimmed.length > 15)
+        throw new Error('El nombre de usuario no puede superar los 15 caracteres');
+      if (!/^[a-zA-Z0-9_]+$/.test(trimmed))
+        throw new Error('El nombre de usuario solo puede contener letras, números y guiones bajos');
       payload.username = trimmed;
     }
 
@@ -69,9 +89,17 @@ export class ProfileService {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      if (error.code === '23505') {
+        throw new Error('Este nombre de usuario ya está en uso');
+      }
+      throw error;
+    }
 
     return this.mapProfile(data);
   }
 
+  async togglePublic(current: boolean): Promise<Profile> {
+    return this.updateProfile({ is_public: !current });
+  }
 }

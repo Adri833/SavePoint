@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, OnDestroy, Renderer2 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, switchMap, of, catchError } from 'rxjs';
 import { FavoriteGame } from '../../../models/favorite-games.model';
@@ -17,10 +17,13 @@ const MAX_FAVORITES = 6;
   styleUrl: './favorite-games.scss',
 })
 export class FavoriteGamesComponent implements OnInit, OnDestroy {
+  @Input() userId?: string; // si viene, modo lectura con datos de ese usuario
+  @Input() readonly = false; // oculta picker y botones de edición
+
   favorites: FavoriteGame[] = [];
   loading = true;
 
-  // ── Picker state ──
+  // ── Picker state (solo en modo edición) ──
   pickerSlot: number | null = null;
   searchQuery = '';
   searchResults: GameDTO[] = [];
@@ -39,19 +42,23 @@ export class FavoriteGamesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadFavorites();
-    this.setupSearch();
 
-    this.removeKeyListener = this.renderer.listen('window', 'keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && this.pickerSlot !== null) this.closePicker();
-    });
+    if (!this.readonly) {
+      this.setupSearch();
+      this.removeKeyListener = this.renderer.listen('window', 'keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && this.pickerSlot !== null) this.closePicker();
+      });
+    }
   }
 
-  /* ========== LOAD ========== */
+  // ========== LOAD ==========
 
   async loadFavorites() {
     try {
       this.loading = true;
-      this.favorites = await this.favoriteGamesService.getAll();
+      this.favorites = this.userId
+        ? await this.favoriteGamesService.getAllByUserId(this.userId)
+        : await this.favoriteGamesService.getAll();
     } catch {
       this.favorites = [];
     } finally {
@@ -60,7 +67,7 @@ export class FavoriteGamesComponent implements OnInit, OnDestroy {
     }
   }
 
-  /* ========== SEARCH ========== */
+  // ========== SEARCH ==========
 
   private setupSearch() {
     this.search$
@@ -91,9 +98,10 @@ export class FavoriteGamesComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  /* ========== PICKER ========== */
+  // ========== PICKER ==========
 
   openPicker(slot: number) {
+    if (this.readonly) return;
     this.pickerSlot = slot;
     this.searchQuery = '';
     this.searchResults = [];
@@ -113,7 +121,6 @@ export class FavoriteGamesComponent implements OnInit, OnDestroy {
 
     this.pickerError = null;
 
-    // Si ya existe en otra posición, no permitir duplicado
     const duplicate = this.favorites.find(
       (f) => f.game_id === game.id && f.position !== this.pickerSlot,
     );
@@ -123,11 +130,8 @@ export class FavoriteGamesComponent implements OnInit, OnDestroy {
     }
 
     try {
-      // Si el slot ya tenía un juego, borrarlo primero
       const existing = this.favorites.find((f) => f.position === this.pickerSlot);
-      if (existing) {
-        await this.favoriteGamesService.remove(existing.id);
-      }
+      if (existing) await this.favoriteGamesService.remove(existing.id);
 
       const added = await this.favoriteGamesService.add({
         game_id: game.id,
@@ -150,6 +154,7 @@ export class FavoriteGamesComponent implements OnInit, OnDestroy {
   }
 
   async removeGame(favorite: FavoriteGame, event: Event) {
+    if (this.readonly) return;
     event.stopPropagation();
     try {
       await this.favoriteGamesService.remove(favorite.id);
@@ -158,17 +163,13 @@ export class FavoriteGamesComponent implements OnInit, OnDestroy {
     } catch {}
   }
 
-  /* ========== HELPERS ========== */
+  // ========== HELPERS ==========
 
   get slots(): (FavoriteGame | null)[] {
     return Array.from(
       { length: MAX_FAVORITES },
       (_, i) => this.favorites.find((f) => f.position === i + 1) ?? null,
     );
-  }
-
-  getFavoriteForSlot(slot: number): FavoriteGame | null {
-    return this.favorites.find((f) => f.position === slot) ?? null;
   }
 
   ngOnDestroy(): void {

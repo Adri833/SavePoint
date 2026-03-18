@@ -1,15 +1,20 @@
-@use '../../../../../styles/colors' as *;
-@use '../../../../../styles/mixins' as *;
+@use '../../../../styles/colors' as *;
+@use '../../../../styles/mixins' as *;
 
-// ========== PAGE ==========
+:host {
+  display: block;
+  background: $color-bg-base;
+  min-height: 100vh;
+}
 
-.profile-page {
+.user-profile-page {
   max-width: 1100px;
   margin: 0 auto;
   padding: 32px 24px 80px;
   display: flex;
   flex-direction: column;
   gap: 0;
+  min-height: 100vh;
 }
 
 // ========== SECTION DIVIDER ==========
@@ -26,6 +31,7 @@
   );
   margin: 0;
   border: none;
+  animation: fade-in 0.4s 0.15s ease both;
 }
 
 // ========== HERO ==========
@@ -33,13 +39,13 @@
 .profile-hero {
   background: $color-bg-base;
   padding: 40px 28px 36px;
+  animation: fade-in-up 0.4s ease both;
 }
 
 .hero-main {
   display: flex;
   align-items: flex-start;
   gap: 32px;
-  animation: fade-in-up 0.4s ease both;
 }
 
 // ========== AVATAR ==========
@@ -70,6 +76,7 @@
   }
 
   &.skeleton {
+    @include skeleton;
     box-shadow: none;
     border-radius: 50%;
   }
@@ -102,7 +109,6 @@
   font-size: 14px;
   color: $color-text-muted;
   line-height: 1.6;
-  text-align: justify;
   margin-bottom: 16px;
   max-width: 560px;
 
@@ -112,101 +118,59 @@
   }
 }
 
-// ========== TAGS ==========
-
-.hero-tags {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.tag {
-  font-size: 11px;
-  font-weight: 500;
-  padding: 6px 10px;
-  border-radius: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  transition:
-    opacity 0.2s,
-    transform 0.15s;
-
-  &:hover {
-    opacity: 0.9;
-  }
-
-  &--loading {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-
-  &--public {
-    background: $color-success-12;
-    color: $color-success;
-    border: 1px solid $color-success-20;
-  }
-
-  &--private {
-    background: $color-danger-08;
-    color: $color-danger;
-    border: 1px solid $color-danger-35;
-  }
-}
-
 // ========== ACTIONS ==========
 
 .hero-actions {
   display: flex;
-  flex-direction: row;
   gap: 8px;
   align-items: flex-start;
   flex-shrink: 0;
   padding-top: 8px;
-
-  .icon {
-    width: 14px;
-    height: 14px;
-  }
 }
+
+// ========== BUTTONS ==========
 
 // ========== BUTTONS ==========
 
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  background: $color-primary-08;
+  border: 1px solid $color-primary-20;
+  color: $color-text-purple;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
   font-weight: 500;
+  padding: 7px 14px;
   border-radius: 10px;
-  border: none;
   cursor: pointer;
   transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 
-  &-sm {
-    padding: 7px 14px;
-    font-size: 12px;
+  svg {
+    width: 13px;
+    height: 13px;
+    transition: transform 0.2s ease;
   }
 
-  &-ghost {
-    background: $color-primary-08;
-    color: $color-text-primary;
-    border: 1px solid $color-primary-20;
+  &:hover {
+    background: $color-primary-20;
+    border-color: $color-primary-50;
+    color: $color-text-accent2;
 
-    &:hover {
-      background: $color-primary-20;
+    svg {
+      transform: translateX(2px);
     }
   }
+}
 
-  &-copied {
-    background: $color-success-12;
-    color: $color-success;
-    border: 1px solid $color-success-20;
-    pointer-events: none;
-  }
+.btn--no-slide:hover svg {
+  transform: none;
 }
 
 // ========== SKELETON ==========
@@ -241,6 +205,23 @@
 
 // ========== ANIMATIONS ==========
 
+app-favorite-games {
+  animation: fade-in-up 0.4s 0.1s ease both;
+}
+
+app-recent-platinum {
+  animation: fade-in-up 0.4s 0.2s ease both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -249,5 +230,66 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+// ========== NOT FOUND / PRIVATE ==========
+
+.not-found {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+  padding: 40px 24px;
+  animation: fade-in-up 0.4s ease both;
+}
+
+.not-found-logo {
+  width: 90px;
+  height: auto;
+  filter: grayscale(1) opacity(0.35);
+  margin-bottom: 8px;
+}
+
+.not-found-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: $color-white;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.not-found-desc {
+  font-size: 14px;
+  color: $color-text-faint;
+  font-style: italic;
+  margin: 0;
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+.not-found-btn {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: $color-primary-08;
+  color: $color-text-purple;
+  border: 1px solid $color-primary-20;
+  padding: 9px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    background: $color-primary-20;
+    border-color: $color-primary-50;
   }
 }

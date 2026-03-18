@@ -38,6 +38,8 @@
               class="tag"
               [class.tag--public]="profile.is_public"
               [class.tag--private]="!profile.is_public"
+              (click)="togglePublic()"
+              [class.tag--loading]="togglingPublic"
             >
               <svg
                 width="12"

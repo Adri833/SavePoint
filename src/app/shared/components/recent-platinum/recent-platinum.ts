@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { PlaythroughService } from '../../../services/playtrough.service';
 import { GamesService } from '../../../services/games.service';
 import { Router } from '@angular/router';
@@ -19,6 +19,8 @@ interface PlatinumEntry {
   styleUrl: './recent-platinum.scss',
 })
 export class RecentPlatinum implements OnInit {
+  @Input() userId?: string;
+
   entries: PlatinumEntry[] = [];
   loading = true;
   error: string | null = null;
@@ -34,10 +36,13 @@ export class RecentPlatinum implements OnInit {
 
   async ngOnInit() {
     try {
-      const playthroughs = await this.playthroughService.getRecentPlatinums(6);
+      const playthroughs = this.userId
+        ? await this.playthroughService.getRecentPlatinumsByUserId(this.userId, 6)
+        : await this.playthroughService.getRecentPlatinums(6);
 
       if (playthroughs.length === 0) {
         this.loading = false;
+        this.cdr.detectChanges();
         return;
       }
 
@@ -53,18 +58,19 @@ export class RecentPlatinum implements OnInit {
             gameCover: games[i]?.background_image ?? null,
           }));
           this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (e) => {
           this.error = e.message ?? 'Error al cargar los juegos';
           this.loading = false;
+          this.cdr.detectChanges();
         },
       });
     } catch (e: any) {
       this.error = e.message ?? 'Error al cargar los platinos';
       this.loading = false;
+      this.cdr.detectChanges();
     }
-
-    this.cdr.detectChanges();
   }
 
   formatDate(date: Date | null): string {

@@ -42,7 +42,7 @@ export class Login {
 
     try {
       await this.authService.login(this.email, this.password);
-      await this.router.navigate(['/home/biblioteca']);
+      await this.router.navigate(['/home/playthroughs']);
     } catch (error: any) {
       this.error = this.mapAuthError(error);
     } finally {

@@ -35,6 +35,44 @@ export class PlaythroughService {
     }));
   }
 
+  async getAllByUserId(userId: string): Promise<Playthrough[]> {
+    const { data, error } = await supabase
+      .from('playthroughs')
+      .select('*')
+      .eq('user_id', userId)
+      .order('started_at', { ascending: false });
+
+    if (error) throw error;
+
+    return (data ?? []).map((p) => ({
+      ...p,
+      started_at: new Date(p.started_at),
+      ended_at: p.ended_at ? new Date(p.ended_at) : null,
+      created_at: new Date(p.created_at),
+      updated_at: new Date(p.updated_at),
+    }));
+  }
+
+  async getRecentPlatinumsByUserId(userId: string, limit = 6): Promise<Playthrough[]> {
+    const { data, error } = await supabase
+      .from('playthroughs')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('platinum', true)
+      .order('ended_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    return (data ?? []).map((p) => ({
+      ...p,
+      started_at: new Date(p.started_at),
+      ended_at: p.ended_at ? new Date(p.ended_at) : null,
+      created_at: new Date(p.created_at),
+      updated_at: new Date(p.updated_at),
+    }));
+  }
+
   async getByGame(gameId: number): Promise<Playthrough[]> {
     const userId = await this.getUserId();
 

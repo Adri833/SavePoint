@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -39,6 +40,7 @@ export class EditProfileModal implements OnInit, OnDestroy {
   constructor(
     private profileService: ProfileService,
     private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -53,15 +55,13 @@ export class EditProfileModal implements OnInit, OnDestroy {
     });
   }
 
-  /* ========== AUTO RESIZE ========== */
-
   autoResize(event: Event) {
     const el = event.target as HTMLTextAreaElement;
     el.style.height = 'auto';
     el.style.height = `${el.scrollHeight}px`;
   }
 
-  /* ========== SAVE ========== */
+  // ========== SAVE ==========
 
   async save() {
     this.errorMessage = null;
@@ -69,9 +69,7 @@ export class EditProfileModal implements OnInit, OnDestroy {
     const payload: UpdateProfilePayload = {};
 
     if (this.username !== this.profile.username) payload.username = this.username;
-
     if (this.bio !== (this.profile.bio ?? '')) payload.bio = this.bio.trim() || null;
-
     if (this.avatarUrl !== (this.profile.avatar_url ?? ''))
       payload.avatar_url = this.avatarUrl.trim() || null;
 
@@ -81,6 +79,7 @@ export class EditProfileModal implements OnInit, OnDestroy {
     }
 
     this.isLoading = true;
+    this.cdr.detectChanges();
 
     try {
       const updated = await this.profileService.updateProfile(payload);
@@ -90,10 +89,11 @@ export class EditProfileModal implements OnInit, OnDestroy {
       this.errorMessage = err.message ?? 'Error inesperado';
     } finally {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 
-  /* ========== HELPERS ========== */
+  // ========== HELPERS ==========
 
   get bioCharCount(): number {
     return this.bio.length;

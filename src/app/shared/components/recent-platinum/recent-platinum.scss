@@ -26,7 +26,7 @@
 }
 
 .trophy-icon {
-  width: 36px;
+  width: 32px;
   height: auto;
   display: block;
 }
@@ -205,8 +205,9 @@
 }
 
 .empty-icon {
-  display: block;
-  font-size: 32px;
+  width: 90px;
+  height: auto;
+  filter: grayscale(1) opacity(0.8);
   margin-bottom: 8px;
 }
 

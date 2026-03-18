@@ -1,0 +1,106 @@
+<div class="playthroughs-container">
+  @if (loading) {
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+  }
+
+  @if (!loading && error) {
+    <div class="not-found">
+      <img class="not-found-logo" src="/logo_savepoint_sinfondo.png" alt="SavePoint" />
+      <h1 class="not-found-title">Biblioteca no disponible</h1>
+      <p class="not-found-desc">{{ error }}</p>
+      <a class="not-found-btn" routerLink="/">Volver al inicio</a>
+    </div>
+  }
+
+  @if (!loading && profile) {
+    <div class="header">
+      <div class="header-left">
+        <button class="back-btn" (click)="goToProfile()">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M13 8H3M7 4l-4 4 4 4" />
+          </svg>
+          {{ profile.username }}
+        </button>
+        <h1>Biblioteca</h1>
+      </div>
+
+      <div class="filters">
+        <select [(ngModel)]="selectedStatus" (change)="onFilterChange()" class="status-select">
+          <option value="all">Todos</option>
+          <option value="playing">En curso</option>
+          <option value="finished">Completado</option>
+          <option value="platinum">100%</option>
+          <option value="online">Online</option>
+          <option value="dropped">Abandonado</option>
+        </select>
+
+        @if (years.length > 0) {
+          <app-year-selector
+            [years]="years"
+            [selectedYear]="selectedYear"
+            [disabled]="loading"
+            (yearChange)="onYearChange($event)"
+          />
+        }
+      </div>
+    </div>
+
+    @if (showGrid && filteredPlaythroughs.length > 0) {
+      <div class="games-grid">
+        @for (p of filteredPlaythroughs; track p.id) {
+          <div class="game-card" [ngClass]="getState(p).cssClass">
+            <div class="game-card-inner">
+              <div class="cover">
+                <img [src]="p.game_background" [alt]="p.game_name" />
+              </div>
+
+              <div class="info">
+                <div class="info-top">
+                  <div class="title-hours">
+                    <h3>{{ p.game_name }}</h3>
+                    <p>{{ p.hours || 0 }}h jugadas</p>
+                  </div>
+
+                  @if (p.platinum) {
+                    <img class="platinum-icon" src="/trophy-platinum.png" alt="Platino" />
+                  }
+                </div>
+
+                @if (p.status === 'playing') {
+                  <span class="badge playing-badge">En curso</span>
+                } @else {
+                  <span class="badge {{ getState(p).cssClass }}-badge">{{
+                    getState(p).label
+                  }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (!loading && filteredPlaythroughs.length === 0 && years.length > 0) {
+      <div class="empty">No hay partidas para el año {{ selectedYear }}</div>
+    }
+
+    @if (!loading && playthroughs.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <img src="/logo_savepoint_sinfondo.png" alt="empty-state" />
+        </div>
+        <h2 class="empty-title">La biblioteca está vacía</h2>
+        <p class="empty-subtitle">{{ profile.username }} aún no ha registrado ninguna partida</p>
+      </div>
+    }
+  }
+</div>

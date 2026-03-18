@@ -1,4 +1,5 @@
 ﻿@use '../../../../styles/colors' as *;
+
 .register-container {
   min-height: 100vh;
   background: radial-gradient(circle at top, $color-bg-deep, $color-bg-base);
@@ -19,47 +20,145 @@
   opacity: 0;
 }
 
-/* ---------- IZQUIERDA ---------- */
+// ========== IZQUIERDA ==========
+
 .register-image {
   width: 50%;
   background: linear-gradient(135deg, $color-primary-dark, $color-primary-darkest);
-  color: white;
+  color: $color-white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px;
   text-align: center;
+
+  h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    opacity: 0.75;
+    min-height: 24px;
+    transition: opacity 0.3s ease;
+  }
 }
 
 app-logo {
   margin-bottom: 20px;
 }
 
-.register-image h2 {
-  font-size: 36px;
-  margin-bottom: 10px;
+// ── Step indicator ──
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 36px;
 }
 
-.register-image p {
-  font-size: 18px;
-  opacity: 0.9;
+.step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
+
+  &.active {
+    background: $color-white;
+    transform: scale(1.2);
+  }
+
+  &.done {
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(1);
+  }
 }
 
-/* ---------- DERECHA ---------- */
+.step-line {
+  width: 40px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.25);
+  margin: 0 6px;
+}
+
+// ========== DERECHA ==========
+
 .register-form {
   width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden; // clave para que el slide no desborde
+  position: relative;
+}
+
+// ── Steps wrapper ──
+
+.steps-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.step-panel {
+  position: absolute;
+  inset: 0;
   padding: 60px 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%);
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s ease;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+
+  &.slide-out-left {
+    opacity: 0;
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  &:first-child {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: all;
+
+    &.slide-out-left {
+      transform: translateX(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: #1a1a2e;
+  }
 }
 
-.register-form h1 {
-  margin-bottom: 30px;
-  font-size: 28px;
-  text-align: center;
+.step-subtitle {
+  font-size: 13px;
+  color: $color-text-subtle;
+  margin-bottom: 24px;
+  margin-top: 0;
 }
+
+// ========== ERROR ==========
 
 .error-box {
   display: flex;
@@ -77,10 +176,11 @@ app-logo {
   img {
     width: 18px;
     height: 18px;
-    color: $color-danger;
     flex-shrink: 0;
   }
 }
+
+// ========== BUTTONS ==========
 
 .register-form button {
   width: 100%;
@@ -88,19 +188,19 @@ app-logo {
   border: none;
   border-radius: 20px;
   background: $color-primary-dark;
-  color: white;
+  color: $color-white;
   font-size: 18px;
   cursor: pointer;
   transition: background 0.2s ease;
-}
 
-.register-form button:hover {
-  background: $color-primary-darker;
-}
+  &:hover {
+    background: $color-primary-darker;
+  }
 
-.register-form button:disabled {
-  background: #5c3cc4bb;
-  cursor: not-allowed;
+  &:disabled {
+    background: #5c3cc4bb;
+    cursor: not-allowed;
+  }
 }
 
 .submit-btn {
@@ -113,6 +213,21 @@ app-logo {
 .btn-text.hidden {
   opacity: 0;
 }
+
+.back-btn {
+  background: none !important;
+  color: $color-text-dim !important;
+  font-size: 13px !important;
+  padding: 8px !important;
+  margin-top: 4px;
+  border-radius: 8px !important;
+
+  &:hover {
+    color: $color-text-subtle !important;
+  }
+}
+
+// ========== DIVIDER ==========
 
 .divider {
   display: flex;
@@ -131,6 +246,8 @@ app-logo {
   }
 }
 
+// ========== SPINNER ==========
+
 .spinner {
   position: absolute;
   width: 20px;
@@ -140,6 +257,8 @@ app-logo {
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
+
+// ========== ANIMATIONS ==========
 
 @keyframes fadeInPop {
   0% {
@@ -169,7 +288,8 @@ app-logo {
   }
 }
 
-/* ---------- MOBILE ---------- */
+// ========== MOBILE ==========
+
 @media (max-width: 767px) {
   .register-card {
     flex-direction: column;
@@ -184,44 +304,30 @@ app-logo {
   .register-image,
   .register-form {
     width: 100%;
-    padding: 20px 40px;
-    display: flex;
+  }
+
+  .register-image {
+    padding: 28px 40px 20px;
+
+    h2 {
+      font-size: 28px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .step-panel {
+    position: relative;
+    padding: 32px 28px;
+    inset: auto;
+
+    &:not(.visible) {
+      display: none;
+    }
+  }
+
+  .steps-wrapper {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  app-logo {
-    margin-bottom: 15px;
-  }
-
-  .register-image h2 {
-    font-size: 28px;
-  }
-
-  .register-image p {
-    font-size: 14px;
-    text-align: center;
-  }
-
-  .register-form h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .register-form input {
-    width: 100%;
-    max-width: 300px;
-    padding: 12px 14px;
-    font-size: 13px;
-    margin-bottom: 20px;
-  }
-
-  .register-form button {
-    width: 100%;
-    max-width: 300px;
-    padding: 12px;
-    font-size: 14px;
   }
 }
