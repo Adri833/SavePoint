@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { forkJoin, firstValueFrom } from 'rxjs';
-import { PlaythroughService } from '../../../services/playtrough.service';
-import { Playthrough } from '../../../models/playtrough.model';
-import { GamesService } from '../../../services/games.service';
-import { GameDTO } from '../../../utils/game-mapper';
-import { ProfileService } from '../../../services/profile.service';
-import { Profile } from '../../../models/profile.model';
-import { YearSelector } from '../../../shared/components/year-selector/year-selector';
-import { getPlaythroughState } from '../../../utils/playthrough-state';
+import { PlaythroughService } from '../../../../services/playtrough.service';
+import { Playthrough } from '../../../../models/playtrough.model';
+import { GamesService } from '../../../../services/games.service';
+import { GameDTO } from '../../../../utils/game-mapper';
+import { ProfileService } from '../../../../services/profile.service';
+import { Profile } from '../../../../models/profile.model';
+import { YearSelector } from '../../../../shared/components/year-selector/year-selector';
+import { getPlaythroughState } from '../../../../utils/playthrough-state';
 
 @Component({
   selector: 'app-user-playthroughs',
@@ -144,7 +144,7 @@ export class Userplaythroughs implements OnInit {
   }
 
   goToProfile() {
-    this.router.navigate(['/u', this.profile!.username]);
+    this.router.navigate(['/home/u', this.profile!.username]);
   }
 
   getState = getPlaythroughState;

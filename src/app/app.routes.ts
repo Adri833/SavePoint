@@ -36,16 +36,6 @@ export const routes: Routes = [
     path: 'auth/callback',
     component: AuthCallback,
   },
-  {
-    path: 'u/:username',
-    loadComponent: () =>
-      import('./pages/public/user-profile/user-profile').then((m) => m.UserProfile),
-  },
-  {
-    path: 'u/:username/playthroughs',
-    loadComponent: () =>
-      import('./pages/public/user-playthroughs/user-playthroughs').then((m) => m.Userplaythroughs),
-  },
 
   // ========== HOME (autenticado) ==========
   {
@@ -69,9 +59,27 @@ export const routes: Routes = [
           import('./pages/guard/home/profile/profile').then((m) => m.ProfileComponent),
       },
       {
+        path: 'friends',
+        loadComponent: () => import('./pages/guard/home/friends/friends').then((m) => m.Friends),
+      },
+      {
         path: 'game/:id',
         loadComponent: () =>
           import('./pages/guard/home/game-detail/game-detail').then((m) => m.GameDetail),
+      },
+
+      // ========== PERFILES PÚBLICOS (dentro del layout autenticado) ==========
+      {
+        path: 'u/:username',
+        loadComponent: () =>
+          import('./pages/guard/home/user-profile/user-profile').then((m) => m.UserProfile),
+      },
+      {
+        path: 'u/:username/biblioteca',
+        loadComponent: () =>
+          import('./pages/guard/home/user-playthroughs/user-playthroughs').then(
+            (m) => m.Userplaythroughs,
+          ),
       },
     ],
   },

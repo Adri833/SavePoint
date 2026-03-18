@@ -36,6 +36,17 @@
       [collapsed]="collapsed"
     >
     </app-sidebar-item>
+
+    <app-sidebar-item
+      routerLink="/home/friends"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      icon="/add-user.png"
+      iconActive="/add-user-filled.png"
+      label="Amigos"
+      [collapsed]="collapsed"
+    >
+    </app-sidebar-item>
   </nav>
 
   <div class="sidebar-footer">

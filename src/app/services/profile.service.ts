@@ -32,15 +32,37 @@ export class ProfileService {
   }
 
   async getProfileByUsername(username: string): Promise<Profile | null> {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
       .eq('username', username)
-      .eq('is_public', true)
       .maybeSingle();
 
     if (error) throw error;
-    return data ? this.mapProfile(data) : null;
+    if (!data) return null;
+
+    if (!user) {
+      return data.is_public ? this.mapProfile(data) : null;
+    }
+
+    if (data.id === user.id) return this.mapProfile(data);
+
+    if (data.is_public) return this.mapProfile(data);
+
+    const { data: friendship } = await supabase
+      .from('friendships')
+      .select('id')
+      .eq('status', 'accepted')
+      .or(
+        `and(requester_id.eq.${user.id},addressee_id.eq.${data.id}),and(requester_id.eq.${data.id},addressee_id.eq.${user.id})`,
+      )
+      .maybeSingle();
+
+    return friendship ? this.mapProfile(data) : null;
   }
 
   async isUsernameAvailable(username: string): Promise<boolean> {

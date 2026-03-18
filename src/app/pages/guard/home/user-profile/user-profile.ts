@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Profile } from '../../../models/profile.model';
-import { ProfileService } from '../../../services/profile.service';
-import { FavoriteGamesComponent } from '../../../shared/components/favorite-games/favorite-games';
-import { RecentPlatinum } from '../../../shared/components/recent-platinum/recent-platinum';
-import { supabase } from '../../../supabase.client';
+import { Profile } from '../../../../models/profile.model';
+import { ProfileService } from '../../../../services/profile.service';
+import { FavoriteGamesComponent } from '../../../../shared/components/favorite-games/favorite-games';
+import { RecentPlatinum } from '../../../../shared/components/recent-platinum/recent-platinum';
 
 @Component({
   selector: 'app-user-profile',
@@ -58,11 +57,10 @@ export class UserProfile implements OnInit {
   }
 
   goToBiblioteca() {
-    this.router.navigate(['/u', this.profile!.username, 'playthroughs']);
+    this.router.navigate(['/home/u', this.profile!.username, 'biblioteca']);
   }
 
-  async goToHome(): Promise<void> {
-  const { data } = await supabase.auth.getSession();
-  this.router.navigate(data.session ? ['/home/playthroughs'] : ['/']);
-}
+  goToHome(): void {
+    this.router.navigate(['/home/playthroughs']);
+  }
 }

@@ -1,12 +1,10 @@
-@use '../../../../styles/colors' as *;
+@use '../../../../../styles/colors' as *;
 
 :host {
   display: block;
   background: $color-bg-base;
   min-height: 100vh;
 }
-
-// Reutiliza los estilos de playthroughs — solo cambia el header
 
 .playthroughs-container {
   position: relative;
