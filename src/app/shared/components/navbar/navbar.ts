@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
   imports: [RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
+  standalone: true,
 })
 export class Navbar implements OnInit, OnDestroy {
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
@@ -23,13 +24,21 @@ export class Navbar implements OnInit, OnDestroy {
         }
       }),
     );
+
+    this.sub.add(
+      this.searchService.query$.subscribe((query) => {
+        if (this.searchInput?.nativeElement.value !== query) {
+          this.searchInput.nativeElement.value = query;
+        }
+      }),
+    );
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  onSearch(event: Event) {
+  onInput(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.searchService.setQuery(value.trim());
   }

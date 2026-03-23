@@ -1,0 +1,67 @@
+<!-- Backdrop -->
+@if (show) {
+  <div class="modal-backdrop" (click)="closeModal()"></div>
+}
+
+<!-- Modal -->
+@if (show) {
+  <div class="modal" [class.show]="show">
+    <div class="modal-header">
+      <h2>Todos los Platinos</h2>
+      <app-close-button size="small" (close)="closeModal()"></app-close-button>
+    </div>
+
+    <div class="modal-content">
+      <!-- Loading -->
+      @if (loading) {
+        <div class="loading-state">
+          @for (s of [1, 2, 3, 4]; track s) {
+            <div class="skeleton"></div>
+          }
+        </div>
+      }
+
+      <!-- Error -->
+      @if (error) {
+        <div class="error-state">
+          <p>{{ error }}</p>
+        </div>
+      }
+
+      <!-- Lista de platinos -->
+      @if (!loading && entries.length > 0) {
+        <div class="list-container">
+          @for (e of entries; track e.playthrough.id; let i = $index) {
+            <div class="platinum-item">
+              <div class="item-rank">{{ entries.length - i }}</div>
+
+              @if (e.gameCover) {
+                <div class="item-cover">
+                  <img [src]="e.gameCover" [alt]="e.gameName" loading="lazy" />
+                </div>
+              }
+
+              <div class="item-info">
+                <span class="item-game-name">{{ e.gameName }}</span>
+                <span class="item-date">{{ formatDate(e.playthrough.ended_at) }}</span>
+              </div>
+
+              <div class="item-badges">
+                @if (e.playthrough.hours) {
+                  <span class="badge hours">{{ e.playthrough.hours }}h</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Empty -->
+      @if (!loading && entries.length === 0) {
+        <div class="empty-state">
+          <p>Aún no hay platinos</p>
+        </div>
+      }
+    </div>
+  </div>
+}

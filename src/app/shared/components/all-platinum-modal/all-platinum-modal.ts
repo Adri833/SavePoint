@@ -1,10 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+  HostListener,
+} from '@angular/core';
 import { PlaythroughService } from '../../../services/playtrough.service';
 import { GamesService } from '../../../services/games.service';
 import { catchError, forkJoin, of } from 'rxjs';
 import { Playthrough } from '../../../models/playtrough.model';
-import { AllPlatinumModal } from '../all-platinum-modal/all-platinum-modal';
+import { CloseButton } from '../close-button/close-button';
 
 interface PlatinumEntry {
   playthrough: Playthrough;
@@ -13,21 +20,35 @@ interface PlatinumEntry {
 }
 
 @Component({
-  selector: 'app-recent-platinum',
-  imports: [CommonModule, AllPlatinumModal],
-  templateUrl: './recent-platinum.html',
-  styleUrl: './recent-platinum.scss',
+  selector: 'app-all-platinum-modal',
+  imports: [CommonModule, CloseButton],
+  templateUrl: './all-platinum-modal.html',
+  styleUrl: './all-platinum-modal.scss',
 })
-export class RecentPlatinum implements OnInit {
-  @Input() userId?: string;
-
+export class AllPlatinumModal {
   entries: PlatinumEntry[] = [];
-  totalPlatinums = 0;
   loading = true;
   error: string | null = null;
-  showModal = false;
 
-  readonly skeletons = [1, 2, 3, 4];
+  private _show = false;
+
+  @Input() userId?: string;
+
+  @Input()
+  set show(value: boolean) {
+    this._show = value;
+    this.showChange.emit(this._show);
+
+    if (this._show) {
+      this.loadPlatinums();
+    }
+  }
+
+  get show(): boolean {
+    return this._show;
+  }
+
+  @Output() showChange = new EventEmitter<boolean>();
 
   constructor(
     private playthroughService: PlaythroughService,
@@ -35,18 +56,15 @@ export class RecentPlatinum implements OnInit {
     private cdr: ChangeDetectorRef,
   ) {}
 
-  async ngOnInit() {
-    try {
-      const [playthroughs, total] = await Promise.all([
-        this.userId
-          ? this.playthroughService.getRecentPlatinumsByUserId(this.userId, 6)
-          : this.playthroughService.getRecentPlatinums(6),
-        this.userId
-          ? this.playthroughService.countPlatinumsByUserId(this.userId)
-          : this.playthroughService.countPlatinums(),
-      ]);
+  async loadPlatinums() {
+    this.loading = true;
+    this.error = null;
+    this.entries = [];
 
-      this.totalPlatinums = total;
+    try {
+      const playthroughs = this.userId
+        ? await this.playthroughService.getRecentPlatinumsByUserId(this.userId, 100)
+        : await this.playthroughService.getRecentPlatinums(100);
 
       if (playthroughs.length === 0) {
         this.loading = false;
@@ -81,16 +99,20 @@ export class RecentPlatinum implements OnInit {
     }
   }
 
+  closeModal() {
+    this.show = false;
+  }
+
   formatDate(date: Date | null): string {
     if (!date) return '—';
     return date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
   }
 
-  goToAll(): void {
-    this.showModal = true;
-  }
-
-  animationDelay(i: number): string {
-    return `${i * 60}ms`;
+  // ===== ESC listener =====
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.show) {
+      this.closeModal();
+    }
   }
 }

@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
   imports: [CommonModule, PlatformIcons],
   templateUrl: './search-overlay.html',
   styleUrl: './search-overlay.scss',
+  standalone: true,
 })
 export class SearchOverlay implements OnInit, OnDestroy {
   query = '';
@@ -25,10 +26,27 @@ export class SearchOverlay implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-  this.subs.add(this.searchService.query$.subscribe((q) => { this.query = q; this.cd.detectChanges(); }));
-  this.subs.add(this.searchService.results$.subscribe((r) => { this.results = r; this.cd.detectChanges(); }));
-  this.subs.add(this.searchService.loading$.subscribe((l) => { this.loading = l; this.cd.detectChanges(); }));
-}
+    this.subs.add(
+      this.searchService.query$.subscribe((q) => {
+        this.query = q;
+        this.cd.detectChanges();
+      }),
+    );
+
+    this.subs.add(
+      this.searchService.results$.subscribe((r) => {
+        this.results = r;
+        this.cd.detectChanges();
+      }),
+    );
+
+    this.subs.add(
+      this.searchService.loading$.subscribe((l) => {
+        this.loading = l;
+        this.cd.detectChanges();
+      }),
+    );
+  }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
