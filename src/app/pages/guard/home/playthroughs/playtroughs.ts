@@ -1,15 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { forkJoin, firstValueFrom } from 'rxjs';
 import { PlaythroughService } from '../../../../services/playtrough.service';
 import { Playthrough } from '../../../../models/playtrough.model';
-import { GamesService } from '../../../../services/games.service';
-import { GameDTO } from '../../../../utils/game-mapper';
 import { PlaythroughDetailModal } from '../../../../shared/components/playthrough-detail-modal/playthrough-detail-modal';
 import { YearSelector } from '../../../../shared/components/year-selector/year-selector';
 import { SearchService } from '../../../../services/search.service';
 import { getPlaythroughState } from '../../../../utils/playthrough-state';
+import { GameDTO } from '../../../../utils/game-mapper';
+import { firstValueFrom, forkJoin } from 'rxjs';
+import { GamesService } from '../../../../services/games.service';
 
 @Component({
   selector: 'app-playthroughs',
@@ -33,8 +33,8 @@ export class Playthroughs implements OnInit {
 
   constructor(
     private playthroughService: PlaythroughService,
-    private gamesService: GamesService,
     private searchService: SearchService,
+    private gamesService: GamesService,
     private cd: ChangeDetectorRef,
   ) {}
 
@@ -49,21 +49,34 @@ export class Playthroughs implements OnInit {
     try {
       this.playthroughs = await this.playthroughService.getAllByUser();
 
-      if (this.playthroughs.length) {
-        const gameRequests = this.playthroughs.map((p) => this.gamesService.getGameById(p.game_id));
-        const games: GameDTO[] = await firstValueFrom(forkJoin(gameRequests));
-
+      // Fallback para partidas antiguas sin datos de juego
+      const orphans = this.playthroughs.filter((p) => !p.game_name);
+      if (orphans.length) {
+        const requests = orphans.map((p) => this.gamesService.getGameById(p.game_id));
+        const games: GameDTO[] = await firstValueFrom(forkJoin(requests));
         games.forEach((game, i) => {
-          const p = this.playthroughs[i];
-          p.game_name = game.name;
-          p.game_background = game.background_image ?? '';
-          p.game_released = game.released ?? '';
+          orphans[i].game_name = game.name;
+          orphans[i].game_background = game.background_image ?? '';
+          orphans[i].game_released = game.released ?? '';
         });
 
-        this.playthroughs.sort(
-          (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime(),
+        await Promise.all(
+          orphans.map((p) =>
+            this.playthroughService.updateGameInfo(
+              p.id,
+              p.game_name,
+              p.game_background,
+              p.game_released ?? '',
+            ),
+          ),
         );
+      }
 
+      this.playthroughs.sort(
+        (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime(),
+      );
+
+      if (this.playthroughs.length) {
         this.years = this.extractYears(this.playthroughs);
         this.selectedYear = this.years[0];
       }

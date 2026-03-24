@@ -25,6 +25,9 @@ export class StartPlaythroughModal implements OnInit, OnDestroy, AfterViewInit {
   @Input() gameId!: number;
   @Output() closed = new EventEmitter<void>();
   @Output() started = new EventEmitter<void>();
+  @Input() gameName!: string;
+  @Input() gameBackground!: string;
+  @Input() gameReleased!: string;
   @ViewChild('dateInput') dateInput!: ElementRef;
 
   startedAtISO: string = new Date().toISOString().split('T')[0];
@@ -90,6 +93,9 @@ export class StartPlaythroughModal implements OnInit, OnDestroy, AfterViewInit {
       await this.playthroughService.start(
         this.gameId,
         new Date(this.startedAtISO),
+        this.gameName,
+        this.gameBackground,
+        this.gameReleased,
         this.notes || undefined,
       );
 

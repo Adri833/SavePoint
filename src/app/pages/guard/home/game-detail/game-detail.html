@@ -90,6 +90,9 @@
             @if (showStartModal) {
               <app-start-playthrough-modal
                 [gameId]="game.id"
+                [gameName]="game.name"
+                [gameBackground]="game.background_image?? ''"
+                [gameReleased]="game.released ?? ''"
                 (closed)="closeStartModal()"
                 (started)="onPlaythroughStarted()"
               />

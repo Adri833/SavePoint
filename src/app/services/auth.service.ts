@@ -29,11 +29,17 @@ export class AuthService {
     return data;
   }
 
-  async register(email: string, password: string) {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+  async register(email: string, password: string, username?: string) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        data: { username },
+      },
+    });
     if (error) throw error;
-
-    this.user$.next(data.user);
+    if (data.session) this.user$.next(data.user);
     return data;
   }
 
@@ -51,6 +57,14 @@ export class AuthService {
   async resetPassword(email: string) {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/auth/callback`,
+    });
+    if (error) throw error;
+  }
+
+  async resendConfirmation(email: string) {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
     });
     if (error) throw error;
   }

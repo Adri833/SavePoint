@@ -7,6 +7,7 @@ import { ProfileService } from '../../../services/profile.service';
 import { Logo } from '../../../shared/components/logo/logo';
 import { InputFieldComponent } from '../../../shared/components/input-field/input-field';
 import { GoogleButton } from '../../../shared/components/google-button/google-button';
+import { supabase } from '../../../supabase.client';
 
 @Component({
   selector: 'app-register',
@@ -23,6 +24,7 @@ export class Register {
   username = '';
   error: string | null = null;
   loading = false;
+  resentSuccess = false;
 
   constructor(
     private authService: AuthService,
@@ -30,6 +32,20 @@ export class Register {
     private router: Router,
     private cdr: ChangeDetectorRef,
   ) {}
+
+  async ngOnInit() {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      this.router.navigate(['/home/playthroughs']);
+      return;
+    }
+
+    const pendingEmail = sessionStorage.getItem('pending_confirmation_email');
+    if (pendingEmail) {
+      this.email = pendingEmail;
+      this.step = 3;
+    }
+  }
 
   // Paso 1 → 2: validación local, sin llamada a Supabase
 
@@ -57,6 +73,7 @@ export class Register {
   goBack() {
     this.error = null;
     this.step = 1;
+    sessionStorage.removeItem('pending_confirmation_email');
   }
 
   // Paso 2: registra + actualiza perfil
@@ -88,21 +105,43 @@ export class Register {
     this.cdr.detectChanges();
 
     try {
-      const available = await this.profileService.isUsernameAvailable(this.username.trim());
+      const available = await this.profileService.isUsernameAvailable(trimmed);
       if (!available) {
         this.error = 'Este nombre de usuario ya está en uso.';
-        this.loading = false;
-        this.cdr.detectChanges();
         return;
       }
 
-      await this.authService.register(this.email, this.password);
-      await this.profileService.updateProfile({ username: this.username.trim() });
-      await this.router.navigate(['/home/playthroughs']);
+      const result = await this.authService.register(this.email, this.password, trimmed);
+
+      if (result.user && result.user.identities?.length === 0) {
+        this.error = 'Este email ya está registrado.';
+        this.step = 1;
+        return;
+      }
+
+      sessionStorage.setItem('pending_confirmation_email', this.email);
+      this.step = 3;
     } catch (error: any) {
       await this.authService.logout();
       this.error = this.mapRegisterError(error);
       if (this.isStep1Error(error)) this.step = 1;
+    } finally {
+      this.loading = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  async resendEmail() {
+    if (this.loading) return;
+    this.loading = true;
+    this.error = null;
+    this.cdr.detectChanges();
+
+    try {
+      await this.authService.resendConfirmation(this.email);
+      this.resentSuccess = true;
+    } catch {
+      this.error = 'No se pudo reenviar el email. Inténtalo más tarde.';
     } finally {
       this.loading = false;
       this.cdr.detectChanges();

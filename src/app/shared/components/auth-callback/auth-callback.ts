@@ -27,20 +27,21 @@ export class AuthCallback implements OnInit {
       return;
     }
 
-    const { data } = await this.authService.getSession();
-    const user = data.session?.user;
+    const { data, error } = await supabase.auth.getSession();
 
-    if (user) {
-      await this.handleUserProfile(user);
+    if (data.session?.user) {
+      await this.handleUserProfile(data.session.user);
       this.router.navigate(['/home/playthroughs']);
       return;
     }
 
-    this.authService.user$.subscribe(async (user) => {
-      if (user) {
-        await this.handleUserProfile(user);
+    const sub = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        sub.data.subscription.unsubscribe();
+        await this.handleUserProfile(session.user);
         this.router.navigate(['/home/playthroughs']);
-      } else {
+      } else if (event === 'SIGNED_OUT') {
+        sub.data.subscription.unsubscribe();
         this.router.navigate(['/landing']);
       }
     });
@@ -49,30 +50,38 @@ export class AuthCallback implements OnInit {
   private async handleUserProfile(user: any) {
     const provider = user.app_metadata?.provider;
 
-    if (provider !== 'google') return;
+    if (provider === 'google') {
+      const name = user.user_metadata?.name || user.user_metadata?.full_name;
+      const avatarUrl = user.user_metadata?.avatar_url;
+      if (!name) return;
 
-    const name = user.user_metadata?.name || user.user_metadata?.full_name;
-    const avatarUrl = user.user_metadata?.avatar_url;
+      let baseUsername = this.generateUsername(name);
+      let finalUsername = baseUsername;
+      let counter = 1;
 
-    if (!name) return;
+      while (!(await this.profileService.isUsernameAvailable(finalUsername))) {
+        finalUsername = `${baseUsername}${counter++}`;
+      }
 
-    let baseUsername = this.generateUsername(name);
-    let finalUsername = baseUsername;
-    let counter = 1;
-
-    while (!(await this.profileService.isUsernameAvailable(finalUsername))) {
-      finalUsername = `${baseUsername}${counter++}`;
+      await this.profileService.updateProfile({
+        username: finalUsername,
+        avatar_url: avatarUrl,
+      });
+      return;
     }
 
-    await this.profileService.updateProfile({
-      username: finalUsername,
-      avatar_url: avatarUrl,
-    });
+    const username = user.user_metadata?.username;
+    if (username) {
+      const available = await this.profileService.isUsernameAvailable(username);
+      const finalUsername = available ? username : `${username}${Math.floor(Math.random() * 1000)}`;
+
+      await this.profileService.updateProfile({ username: finalUsername });
+    }
   }
 
   private generateUsername(name: string): string {
     return name
-      .replace(/[^\w\s]/g, '') 
+      .replace(/[^\w\s]/g, '')
       .replace(/\s+/g, '_')
       .toLowerCase()
       .slice(0, 15);

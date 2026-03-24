@@ -161,7 +161,14 @@ export class PlaythroughService {
 
   /* ========== CREATE ========== */
 
-  async start(gameId: number, startedAt: Date, notes?: string) {
+  async start(
+    gameId: number,
+    startedAt: Date,
+    gameName: string,
+    gameBackground: string,
+    gameReleased: string,
+    notes?: string,
+  ) {
     const user = (await supabase.auth.getUser()).data.user;
     if (!user) throw new Error('Not authenticated');
 
@@ -176,6 +183,9 @@ export class PlaythroughService {
         game_id: gameId,
         status: 'playing',
         started_at: startedAt.toISOString(),
+        game_name: gameName,
+        game_background: gameBackground,
+        game_released: gameReleased,
         notes: notes ?? null,
       })
       .select()
@@ -252,6 +262,19 @@ export class PlaythroughService {
       created_at: new Date(data.created_at),
       updated_at: new Date(data.updated_at),
     } as Playthrough;
+  }
+
+  async updateGameInfo(id: string, gameName: string, gameBackground: string, gameReleased: string) {
+    const { error } = await supabase
+      .from('playthroughs')
+      .update({
+        game_name: gameName,
+        game_background: gameBackground,
+        game_released: gameReleased,
+      })
+      .eq('id', id);
+
+    if (error) throw error;
   }
 
   /* ========== DELETE ========== */

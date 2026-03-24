@@ -40,6 +40,6 @@ export class Navbar implements OnInit, OnDestroy {
 
   onInput(event: Event) {
     const value = (event.target as HTMLInputElement).value;
-    this.searchService.setQuery(value.trim());
+    this.searchService.setQuery(value);
   }
 }

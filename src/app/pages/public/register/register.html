@@ -6,15 +6,20 @@
       <h2>SavePoint</h2>
       <p>
         {{
-          step === 1 ? 'Tu biblioteca de juegos, siempre contigo.' : 'Casi listo. Elige tu nombre de usuario.'
+          step === 1
+            ? 'Tu biblioteca de juegos, siempre contigo.'
+            : step === 2
+              ? 'Casi listo. Elige tu nombre de usuario.'
+              : 'Revisa tu bandeja de entrada.'
         }}
       </p>
 
-      <!-- Indicador de pasos -->
       <div class="step-indicator">
         <div class="step-dot" [class.active]="step >= 1" [class.done]="step > 1"></div>
         <div class="step-line"></div>
-        <div class="step-dot" [class.active]="step >= 2"></div>
+        <div class="step-dot" [class.active]="step >= 2" [class.done]="step > 2"></div>
+        <div class="step-line"></div>
+        <div class="step-dot" [class.active]="step >= 3"></div>
       </div>
     </div>
 
@@ -93,6 +98,35 @@
 
           <button type="button" class="back-btn" [disabled]="loading" (click)="goBack()">
             ← Volver
+          </button>
+        </div>
+
+        <!-- PASO 3: confirmación de email -->
+        <div class="step-panel" [class.visible]="step === 3">
+          <h1>Confirma tu email</h1>
+          <p class="step-subtitle">
+            Hemos enviado un enlace de confirmación a <strong>{{ email }}</strong
+            >. Revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.
+          </p>
+
+          @if (resentSuccess) {
+            <div class="success-box">
+              <span>✓ Email reenviado correctamente</span>
+            </div>
+          }
+
+          @if (error && step === 3) {
+            <div class="error-box">
+              <img src="/error.svg" alt="Error" />
+              <span>{{ error }}</span>
+            </div>
+          }
+
+          <button type="button" class="submit-btn" [disabled]="loading" (click)="resendEmail()">
+            <span class="btn-text" [class.hidden]="loading">Reenviar email</span>
+            @if (loading) {
+              <span class="spinner"></span>
+            }
           </button>
         </div>
       </div>
