@@ -4,6 +4,7 @@ import { Playthrough } from '../models/playtrough.model';
 import { DashboardStats } from '../models/dashboard-stats.model';
 import { GamesService } from './games.service';
 import { firstValueFrom } from 'rxjs';
+import { getPlaythroughState } from '../utils/playthrough-state';
 
 @Injectable({
   providedIn: 'root',
@@ -16,29 +17,34 @@ export class DashboardService {
 
   async getStatsByYear(year: number): Promise<DashboardStats> {
     const playthroughs = await this.playthroughService.getAllByUser();
-
     const filtered = this.filterByYear(playthroughs, year);
-
     const finished = filtered.filter((p) => p.status === 'finished');
 
-    const completed = finished.filter((p) => p.completed);
+    const completedCount = finished.filter((p) =>
+      ['completed', 'platinum'].includes(getPlaythroughState(p).cssClass),
+    ).length;
 
-    const abandoned = finished.filter((p) => !p.completed);
+    const onlineCount = finished.filter((p) => getPlaythroughState(p).cssClass === 'online').length;
 
-    const totalFinished = completed.length;
-    const totalPlatinum = completed.filter((p) => p.platinum).length;
+    const abandonedCount = finished.filter(
+      (p) => getPlaythroughState(p).cssClass === 'abandoned',
+    ).length;
+
+    const totalPlatinum = finished.filter(
+      (p) => getPlaythroughState(p).cssClass === 'platinum',
+    ).length;
 
     const totalHours = filtered.reduce((acc, p) => acc + (p.hours ?? 0), 0);
-
-    const abandonmentRate = finished.length === 0 ? 0 : (abandoned.length / finished.length) * 100;
+    const abandonmentRate = finished.length === 0 ? 0 : (abandonedCount / finished.length) * 100;
 
     return {
       year,
-      totalFinished,
+      totalFinished: completedCount,
       totalPlatinum,
       totalHours,
-      completedCount: completed.length,
-      abandonedCount: abandoned.length,
+      completedCount,
+      abandonedCount,
+      onlineCount,
       abandonmentRate,
     };
   }
@@ -47,34 +53,18 @@ export class DashboardService {
     const playthroughs = await this.playthroughService.getAllByUser();
     const filtered = this.filterByYear(playthroughs, year);
 
-    const map = new Map<number, number>();
+    const map = new Map<number, { gameName: string; hours: number }>();
 
     filtered.forEach((p) => {
-      const gameId = p.game_id;
-      const hours = p.hours ?? 0;
-      map.set(gameId, (map.get(gameId) ?? 0) + hours);
+      const existing = map.get(p.game_id);
+      const hours = (existing?.hours ?? 0) + (p.hours ?? 0);
+      map.set(p.game_id, {
+        gameName: p.game_name ?? `Game #${p.game_id}`,
+        hours,
+      });
     });
 
-    const entries = Array.from(map.entries());
-
-    const games = await Promise.all(
-      entries.map(async ([gameId, hours]) => {
-        try {
-          const game = await firstValueFrom(this.gamesService.getGameById(gameId));
-          return {
-            gameName: game.name,
-            hours,
-          };
-        } catch {
-          return {
-            gameName: 'Unknown',
-            hours,
-          };
-        }
-      }),
-    );
-
-    return games;
+    return Array.from(map.values());
   }
 
   /* ========== HELPERS ========== */

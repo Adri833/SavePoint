@@ -1,3 +1,4 @@
+﻿@use '../../../../styles/colors' as *;
 .playthrough-history {
   margin-top: 1.5rem;
 
@@ -13,8 +14,8 @@
   /* ---------- CARD ---------- */
   .history-item {
     position: relative;
-    background: rgba(20, 20, 34, 0.65);
-    border: 2.5px solid rgba(124, 92, 255, 0.18);
+    background: $color-bg-surface-65;
+    border: 2.5px solid $color-primary-18;
     border-radius: 14px;
     padding: 1.4rem 1.2rem 1.2rem;
     display: flex;
@@ -24,26 +25,34 @@
 
     /* Estados del borde */
     &.platinum {
-      border-color: rgba(180, 255, 255, 0.7);
+      border-color: $color-cyan-alt-70;
 
       &:hover {
-        border-color: rgba(180, 255, 255, 0.9);
+        border-color: $color-cyan-alt-90;
       }
     }
 
     &.completed {
-      border-color: rgba(46, 204, 113, 0.35);
+      border-color: $color-success-35;
 
       &:hover {
-        border-color: rgba(46, 204, 113, 0.5);
+        border-color: $color-success-50;
+      }
+    }
+
+    &.online {
+      border-color: $color-warning-35;
+
+      &:hover {
+        border-color: $color-warning-55;
       }
     }
 
     &.abandoned {
-      border-color: rgba(255, 80, 80, 0.3);
+      border-color: $color-danger-red-30;
 
       &:hover {
-        border-color: rgba(255, 80, 80, 0.5);
+        border-color: $color-danger-red-50;
       }
     }
   }
@@ -94,21 +103,27 @@
     letter-spacing: 0.4px;
 
     &.platinum {
-      background: rgba(180, 255, 255, 0.2) !important;
-      color: #00ffff !important;
-      border: 1px solid rgba(180, 255, 255, 0.5) !important;
+      background: $color-cyan-alt-20 !important;
+      color: $color-cyan-pure !important;
+      border: 1px solid $color-cyan-alt-50 !important;
     }
 
     &.completed {
-      background: rgba(46, 204, 113, 0.12);
-      color: #2ecc71;
-      border: 1px solid rgba(46, 204, 113, 0.35);
+      background: $color-success-12;
+      color: $color-success;
+      border: 1px solid $color-success-35;
     }
 
-    &:not(.completed) {
-      background: rgba(255, 80, 80, 0.12);
-      color: #ff6b6b;
-      border: 1px solid rgba(255, 80, 80, 0.3);
+    &.online {
+      background: $color-warning-12;
+      color: $color-warning;
+      border: 1px solid $color-warning-35;
+    }
+
+    &:not(.completed):not(.online):not(.platinum) {
+      background: $color-danger-red-12;
+      color: $color-danger-alt;
+      border: 1px solid $color-danger-red-30;
     }
   }
 
@@ -117,13 +132,13 @@
     width: 36px;
     height: 36px;
     object-fit: contain;
-    filter: drop-shadow(0 0 3px rgba(180, 255, 255, 0.6));
+    filter: drop-shadow(0 0 3px $color-cyan-alt-60);
   }
 
   /* ---------- DATE ---------- */
   .history-date {
     font-size: 1rem;
-    color: #fff;
+    color: $color-white;
     font-weight: 500;
   }
 
@@ -133,39 +148,43 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(124, 92, 255, 0.35);
+    background: $color-overlay-white-5;
+    border: 1px solid $color-primary-35;
     padding: 0.6rem 0;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
-    color: #e0dbff;
+    color: $color-text-accent5;
     backdrop-filter: blur(4px);
     transition: all 0.2s ease;
   }
 
   /* Colores según estado del padre */
   .history-item.platinum .stat-pill {
-    border-color: rgba(180, 255, 255, 0.5);
+    border-color: $color-cyan-alt-50;
   }
 
   .history-item.completed .stat-pill {
-    border-color: rgba(46, 204, 113, 0.35);
+    border-color: $color-success-35;
+  }
+
+  .history-item.online .stat-pill {
+    border-color: $color-warning-35;
   }
 
   .history-item.abandoned .stat-pill {
-    border-color: rgba(255, 80, 80, 0.3);
+    border-color: $color-danger-red-30;
   }
 
   /* ---------- NOTES ---------- */
   .history-notes {
     font-size: 0.9rem;
-    color: #dcdcff;
+    color: $color-text-accent3;
     line-height: 1.45;
     opacity: 0.95;
-    background: rgba(255, 255, 255, 0.05);
+    background: $color-overlay-white-5;
     padding: 0.5rem 0.8rem;
-    border-left: 3px solid #7c5cff;
+    border-left: 3px solid $color-primary;
     border-radius: 8px;
     font-style: italic;
     backdrop-filter: blur(2px);
@@ -173,14 +192,18 @@
   }
 
   .history-item.platinum .history-notes {
-    border-left-color: rgba(180, 255, 255, 0.5);
+    border-left-color: $color-cyan-alt-50;
   }
 
   .history-item.completed .history-notes {
-    border-left-color: rgba(46, 204, 113, 0.35);
+    border-left-color: $color-success-35;
+  }
+
+  .history-item.online .history-notes {
+    border-left-color: $color-warning-50;
   }
 
   .history-item.abandoned .history-notes {
-    border-left-color: rgba(255, 80, 80, 0.3);
+    border-left-color: $color-danger-red-30;
   }
 }

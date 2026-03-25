@@ -11,6 +11,7 @@ export interface Playthrough {
   ended_at: Date | null;
   completed: boolean;
   platinum: boolean;
+  online?: boolean;
   notes: string | null;
 
   // ---------- Info de auditoría ----------

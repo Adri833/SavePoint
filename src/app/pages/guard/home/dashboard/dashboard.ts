@@ -18,6 +18,7 @@ export class Dashboard implements OnInit {
   gamesData: { gameName: string; hours: number }[] = [];
   completedGames = 0;
   abandonedGames = 0;
+  onlineGames = 0;
   platinumGames = 0;
   isLoading = true;
 
@@ -58,6 +59,7 @@ export class Dashboard implements OnInit {
       this.ngZone.run(() => {
         this.completedGames = stats.completedCount;
         this.abandonedGames = stats.abandonedCount;
+        this.onlineGames = stats.onlineCount;
         this.platinumGames = stats.totalPlatinum;
         this.gamesData = gamesData;
         this.isLoading = false;

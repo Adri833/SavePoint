@@ -28,20 +28,23 @@ export const routes: Routes = [
     canActivate: [GuestGuard],
     component: Register,
   },
-  { 
+  {
     path: 'reset-password',
-    component: ResetPassword 
+    component: ResetPassword,
   },
-  { path: 'auth/callback',
+  {
+    path: 'auth/callback',
     component: AuthCallback,
   },
+
+  // ========== HOME (autenticado) ==========
   {
     path: 'home',
     canActivate: [AuthGuard],
     component: HomeLayout,
     children: [
       {
-        path: 'biblioteca',
+        path: 'playthroughs',
         loadComponent: () =>
           import('./pages/guard/home/playthroughs/playtroughs').then((m) => m.Playthroughs),
       },
@@ -51,9 +54,32 @@ export const routes: Routes = [
           import('./pages/guard/home/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
+        path: 'profile',
+        loadComponent: () =>
+          import('./pages/guard/home/profile/profile').then((m) => m.ProfileComponent),
+      },
+      {
+        path: 'friends',
+        loadComponent: () => import('./pages/guard/home/friends/friends').then((m) => m.Friends),
+      },
+      {
         path: 'game/:id',
         loadComponent: () =>
           import('./pages/guard/home/game-detail/game-detail').then((m) => m.GameDetail),
+      },
+
+      // ========== PERFILES PÚBLICOS (dentro del layout autenticado) ==========
+      {
+        path: 'u/:username',
+        loadComponent: () =>
+          import('./pages/guard/home/user-profile/user-profile').then((m) => m.UserProfile),
+      },
+      {
+        path: 'u/:username/biblioteca',
+        loadComponent: () =>
+          import('./pages/guard/home/user-playthroughs/user-playthroughs').then(
+            (m) => m.Userplaythroughs,
+          ),
       },
     ],
   },

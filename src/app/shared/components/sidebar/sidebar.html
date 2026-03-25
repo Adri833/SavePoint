@@ -5,7 +5,7 @@
 
   <nav class="menu">
     <app-sidebar-item
-      routerLink="/home/biblioteca"
+      routerLink="/home/playthroughs"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
       icon="/library.svg"
@@ -25,13 +25,37 @@
       [collapsed]="collapsed"
     >
     </app-sidebar-item>
+
+    <app-sidebar-item
+      routerLink="/home/profile"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      icon="/user_outfilled.png"
+      iconActive="/user_filled.png"
+      label="Perfil"
+      [collapsed]="collapsed"
+    >
+    </app-sidebar-item>
+
+    <app-sidebar-item
+      routerLink="/home/friends"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      icon="/add-user.png"
+      iconActive="/add-user-filled.png"
+      label="Amigos"
+      [collapsed]="collapsed"
+    >
+    </app-sidebar-item>
   </nav>
 
   <div class="sidebar-footer">
-    <button class="logout-btn" (click)="logout()">
-      @if (!collapsed) {
-        <span>Cerrar sesión</span>
-      }
-    </button>
+    <app-social-icon
+      icon="/discord.svg"
+      href="https://discord.gg/FfSDhxhV7p"
+      label="¡Únete a nuestro Discord!"
+      [showLabel]="!collapsed"
+      target="_blank"
+    ></app-social-icon>
   </div>
 </aside>

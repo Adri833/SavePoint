@@ -1,3 +1,4 @@
+﻿@use '../../../../styles/colors' as *;
 .trending-games {
   margin: clamp(40px, 5vw, 90px) 0;
 
@@ -5,7 +6,7 @@
     padding-left: clamp(16px, 4vw, 36px);
     margin-bottom: 24px;
     font-size: clamp(18px, 3vw, 30px);
-    color: #ffffff;
+    color: $color-white;
   }
 
   .games-scroll-wrapper {
@@ -54,11 +55,11 @@
         left: 0;
         width: 100%;
         padding: 8px 12px;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-        color: #fff;
+        background: linear-gradient(to top, $color-overlay-black-70, transparent);
+        color: $color-white;
         font-weight: 600;
         font-size: clamp(12px, 1vw, 16px);
-        text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+        text-shadow: 0 0 4px $color-overlay-black-70;
       }
     }
   }
@@ -87,9 +88,9 @@
       left: 0;
       background: linear-gradient(
         to right,
-        rgba(0, 0, 0, 0.55),
-        rgba(0, 0, 0, 0.15),
-        rgba(0, 0, 0, 0)
+        $color-overlay-black-55,
+        $color-overlay-black-15,
+        $color-overlay-black-0
       );
     }
 
@@ -97,14 +98,14 @@
       right: 0;
       background: linear-gradient(
         to left,
-        rgba(0, 0, 0, 0.55),
-        rgba(0, 0, 0, 0.15),
-        rgba(0, 0, 0, 0)
+        $color-overlay-black-55,
+        $color-overlay-black-15,
+        $color-overlay-black-0
       );
     }
 
     &:hover {
-      background: rgba(124, 92, 255, 0.45);
+      background: $color-primary-45;
       backdrop-filter: blur(1px);
       transform: scale(1);
       opacity: 1;
@@ -154,7 +155,7 @@
     flex: 0 0 clamp(165px, 15vw, 290px);
     height: clamp(130px, 30vw, 160px);
     border-radius: 12px;
-    background: linear-gradient(90deg, #1a1a2e 25%, #25253d 50%, #1a1a2e 75%);
+    background: linear-gradient(90deg, $color-bg-deep 25%, $color-bg-muted 50%, $color-bg-deep 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }

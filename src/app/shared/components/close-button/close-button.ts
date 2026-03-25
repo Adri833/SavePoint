@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+export type CloseButtonSize = 'small' | 'medium' | 'large';
 
 @Component({
   selector: 'app-close-button',
@@ -7,6 +9,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './close-button.scss',
 })
 export class CloseButton {
+  @Input() size: CloseButtonSize = 'medium';
   @Output() close = new EventEmitter<void>();
 
   onClose() {

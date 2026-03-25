@@ -35,6 +35,44 @@ export class PlaythroughService {
     }));
   }
 
+  async getAllByUserId(userId: string): Promise<Playthrough[]> {
+    const { data, error } = await supabase
+      .from('playthroughs')
+      .select('*')
+      .eq('user_id', userId)
+      .order('started_at', { ascending: false });
+
+    if (error) throw error;
+
+    return (data ?? []).map((p) => ({
+      ...p,
+      started_at: new Date(p.started_at),
+      ended_at: p.ended_at ? new Date(p.ended_at) : null,
+      created_at: new Date(p.created_at),
+      updated_at: new Date(p.updated_at),
+    }));
+  }
+
+  async getRecentPlatinumsByUserId(userId: string, limit = 6): Promise<Playthrough[]> {
+    const { data, error } = await supabase
+      .from('playthroughs')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('platinum', true)
+      .order('ended_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    return (data ?? []).map((p) => ({
+      ...p,
+      started_at: new Date(p.started_at),
+      ended_at: p.ended_at ? new Date(p.ended_at) : null,
+      created_at: new Date(p.created_at),
+      updated_at: new Date(p.updated_at),
+    }));
+  }
+
   async getByGame(gameId: number): Promise<Playthrough[]> {
     const userId = await this.getUserId();
 
@@ -80,9 +118,57 @@ export class PlaythroughService {
     };
   }
 
+  async getRecentPlatinums(limit = 6): Promise<Playthrough[]> {
+    const userId = await this.getUserId();
+
+    const { data, error } = await supabase
+      .from('playthroughs')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('platinum', true)
+      .order('ended_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    return (data ?? []).map((p) => ({
+      ...p,
+      started_at: new Date(p.started_at),
+      ended_at: p.ended_at ? new Date(p.ended_at) : null,
+      created_at: new Date(p.created_at),
+      updated_at: new Date(p.updated_at),
+    }));
+  }
+
+  async countPlatinums(): Promise<number> {
+    const userId = await this.getUserId();
+    const { count } = await supabase
+      .from('playthroughs')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('platinum', true);
+    return count ?? 0;
+  }
+
+  async countPlatinumsByUserId(userId: string): Promise<number> {
+    const { count } = await supabase
+      .from('playthroughs')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('platinum', true);
+    return count ?? 0;
+  }
+
   /* ========== CREATE ========== */
 
-  async start(gameId: number, startedAt: Date, notes?: string) {
+  async start(
+    gameId: number,
+    startedAt: Date,
+    gameName: string,
+    gameBackground: string,
+    gameReleased: string,
+    notes?: string,
+  ) {
     const user = (await supabase.auth.getUser()).data.user;
     if (!user) throw new Error('Not authenticated');
 
@@ -97,6 +183,9 @@ export class PlaythroughService {
         game_id: gameId,
         status: 'playing',
         started_at: startedAt.toISOString(),
+        game_name: gameName,
+        game_background: gameBackground,
+        game_released: gameReleased,
         notes: notes ?? null,
       })
       .select()
@@ -121,11 +210,16 @@ export class PlaythroughService {
     hours: number,
     completed: boolean,
     platinum: boolean,
+    online: boolean,
     notes?: string,
     ended_at?: Date,
   ) {
-    if (platinum && !completed) {
-      throw new Error('No se puede tener platino sin completar el juego');
+    if (platinum && !completed && !online) {
+      throw new Error('No se puede tener platino sin historia completada o juego online');
+    }
+
+    if (completed && online) {
+      throw new Error('No puede estar activo historia y online a la vez');
     }
 
     if (started_at > new Date()) {
@@ -151,6 +245,7 @@ export class PlaythroughService {
         hours,
         completed,
         platinum,
+        online,
         notes: notes ?? null,
         ...(ended_at ? { ended_at: ended_at.toISOString() } : {}),
       })
@@ -169,6 +264,19 @@ export class PlaythroughService {
     } as Playthrough;
   }
 
+  async updateGameInfo(id: string, gameName: string, gameBackground: string, gameReleased: string) {
+    const { error } = await supabase
+      .from('playthroughs')
+      .update({
+        game_name: gameName,
+        game_background: gameBackground,
+        game_released: gameReleased,
+      })
+      .eq('id', id);
+
+    if (error) throw error;
+  }
+
   /* ========== DELETE ========== */
 
   async delete(id: string): Promise<void> {
@@ -183,14 +291,15 @@ export class PlaythroughService {
     hours: number,
     completed: boolean,
     platinum: boolean,
+    online: boolean,
     notes?: string,
   ) {
-    if (platinum && !completed) {
-      throw new Error('No se puede tener platino sin completar el juego');
+    if (platinum && !completed && !online) {
+      throw new Error('No se puede tener platino sin historia completada o juego online');
     }
 
-    if (ended_at > new Date()) {
-      throw new Error('La fecha de finalización no puede ser futura');
+    if (completed && online) {
+      throw new Error('No puede estar activo historia y online a la vez');
     }
 
     const { data, error } = await supabase
@@ -201,6 +310,7 @@ export class PlaythroughService {
         hours,
         completed,
         platinum,
+        online,
         notes: notes ?? null,
       })
       .eq('id', id)

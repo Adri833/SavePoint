@@ -11,4 +11,5 @@ export class SocialIcon {
   @Input() href!: string;
   @Input() label!: string;
   @Input() target: '_blank' | '_self' = '_blank';
+  @Input() showLabel = false;
 }

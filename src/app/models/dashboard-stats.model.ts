@@ -5,5 +5,6 @@ export interface DashboardStats {
   totalHours: number;
   completedCount: number;
   abandonedCount: number;
+  onlineCount: number;
   abandonmentRate: number;
 }

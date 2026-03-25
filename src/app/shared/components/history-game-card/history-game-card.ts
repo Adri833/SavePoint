@@ -1,7 +1,7 @@
-// src/app/shared/components/history-game-card/history-game-card.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Playthrough } from '../../../models/playtrough.model';
+import { getPlaythroughState } from '../../../utils/playthrough-state';
 
 @Component({
   selector: 'app-history-game-card',
@@ -10,10 +10,10 @@ import { Playthrough } from '../../../models/playtrough.model';
   templateUrl: './history-game-card.html',
   styleUrls: ['./history-game-card.scss'],
 })
-export class HistoryGameCard{
+export class HistoryGameCard {
   private _playthroughs: Playthrough[] = [];
 
-  @Input() 
+  @Input()
   set pastPlaythroughs(value: Playthrough[] | Playthrough) {
     this._playthroughs = Array.isArray(value) ? value : [value];
   }
@@ -22,6 +22,8 @@ export class HistoryGameCard{
   }
 
   @Output() editPlaythrough = new EventEmitter<Playthrough>();
+
+  getState = getPlaythroughState;
 
   onEdit(pt: Playthrough) {
     this.editPlaythrough.emit(pt);

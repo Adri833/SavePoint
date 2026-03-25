@@ -1,0 +1,109 @@
+<div class="profile-page">
+  <!-- HERO -->
+  <div class="profile-hero">
+    @if (loading) {
+      <div class="hero-main">
+        <div class="avatar-wrap">
+          <div class="avatar skeleton"></div>
+        </div>
+        <div class="hero-info">
+          <div class="skeleton skeleton--text skeleton--username"></div>
+          <div class="skeleton skeleton--text skeleton--joined"></div>
+          <div class="skeleton skeleton--text skeleton--bio-1"></div>
+          <div class="skeleton skeleton--text skeleton--bio-2"></div>
+        </div>
+      </div>
+    }
+
+    @if (!loading && profile) {
+      <div class="hero-main">
+        <div class="avatar-wrap">
+          @if (profile.avatar_url) {
+            <img class="avatar avatar--img" [src]="profile.avatar_url" [alt]="profile.username" />
+          } @else {
+            <div class="avatar">{{ avatarInitial }}</div>
+          }
+        </div>
+
+        <div class="hero-info">
+          <div class="hero-username">{{ profile.username }}</div>
+          <div class="hero-joined">Miembro desde {{ memberSince }}</div>
+
+          <p class="hero-bio" [class.is-placeholder]="!profile.bio">
+            {{ profile.bio ?? 'Sin bio todavía. ¡Cuéntanos algo sobre ti!' }}
+          </p>
+
+          <div class="hero-tags">
+            <span
+              class="tag"
+              [class.tag--public]="profile.is_public"
+              [class.tag--private]="!profile.is_public"
+              (click)="togglePublic()"
+              [class.tag--loading]="togglingPublic"
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path
+                  d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                />
+              </svg>
+              {{ profile.is_public ? 'Perfil público' : 'Perfil privado' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn btn-ghost btn-sm" (click)="openEditModal()">
+            <img class="icon" src="/edit.svg" alt="Editar" />
+            Editar perfil
+          </button>
+          <button
+            class="btn btn-ghost btn-sm"
+            (click)="copyProfileLink()"
+            [class.btn-copied]="linkCopied"
+          >
+            @if (linkCopied) {
+              <img class="icon" src="/check.svg" alt="Copiado" />
+              ¡Copiado!
+            } @else {
+              <img class="icon" src="/share.svg" alt="Compartir" />
+              Compartir
+            }
+          </button>
+        </div>
+      </div>
+    }
+
+    @if (!loading && error) {
+      <p class="hero-bio is-placeholder">{{ error }}</p>
+    }
+  </div>
+
+  <!-- FAVORITOS -->
+  <app-favorite-games />
+
+  <hr class="section-divider" />
+
+  <!-- PLATINOS -->
+  <app-recent-platinum />
+
+  <div class="page-footer">
+    <button class="logout-link" (click)="logout()">Cerrar sesión</button>
+  </div>
+</div>
+
+@if (showEditModal && profile) {
+  <app-edit-profile-modal
+    [profile]="profile"
+    (closed)="showEditModal = false"
+    (updated)="onProfileUpdated($event)"
+  />
+}

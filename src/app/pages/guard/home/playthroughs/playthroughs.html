@@ -22,7 +22,8 @@
         <option value="playing">En curso</option>
         <option value="finished">Completado</option>
         <option value="platinum">100%</option>
-        <option value="dropped">Abandonado</option>
+        <option value="online">Online</option>
+        <option value="abandoned">Abandonado</option>
       </select>
 
       <!-- Selector de año -->
@@ -42,7 +43,7 @@
   @if (showGrid && !loading && filteredPlaythroughs.length > 0) {
     <div class="games-grid">
       @for (p of filteredPlaythroughs; track p.id) {
-        <div class="game-card" [ngClass]="getStatusClass(p)" (click)="openDetailModal(p)">
+        <div class="game-card" [ngClass]="getState(p).cssClass" (click)="openDetailModal(p)">
           <div class="game-card-inner">
             <div class="cover">
               <img [src]="p.game_background" [alt]="p.game_name" />
@@ -63,14 +64,8 @@
 
               @if (p.status === 'playing') {
                 <span class="badge playing-badge">En curso</span>
-              }
-              @if (p.status === 'finished' && p.completed && p.platinum) {
-                <span class="badge platinum-badge">100%</span>
-              } @else if (p.status === 'finished' && p.completed) {
-                <span class="badge completed-badge">Completado</span>
-              }
-              @if (p.status === 'finished' && !p.completed) {
-                <span class="badge dropped-badge">Abandonado</span>
+              } @else {
+                <span class="badge {{ getState(p).cssClass }}-badge">{{ getState(p).label }}</span>
               }
             </div>
           </div>

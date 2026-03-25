@@ -1,0 +1,221 @@
+<div class="friends-page">
+  @if (loading) {
+    <div class="page-loading">
+      <div class="spinner"></div>
+    </div>
+  } @else {
+    <!-- ========== SEARCH ========== -->
+    <section class="search-section">
+      <h2 class="section-title">Buscar jugadores</h2>
+      <div class="search-wrap">
+        <svg
+          class="search-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input
+          class="search-input"
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="onSearchInput()"
+          placeholder="Buscar por nombre de usuario…"
+        />
+        @if (searchQuery) {
+          <button class="search-clear" (click)="clearSearch()">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        }
+      </div>
+
+      @if (searchLoading) {
+        <div class="search-spinner-wrap">
+          <span class="spinner spinner--sm"></span>
+        </div>
+      }
+
+      @if (!searchLoading && searchResults.length > 0) {
+        <div class="search-results">
+          @for (result of searchResults; track result.id) {
+            <div class="user-row" [class.loading]="isLoading(result.id)">
+              <div class="user-avatar" (click)="goToProfile(result.username)">
+                @if (result.avatar_url) {
+                  <img [src]="result.avatar_url" [alt]="result.username" />
+                } @else {
+                  <span>{{ avatarInitial(result.username) }}</span>
+                }
+              </div>
+              <div class="user-info" (click)="goToProfile(result.username)">
+                <span class="user-name">{{ result.username }}</span>
+              </div>
+              <div class="user-actions">
+                @switch (getFriendshipStatus(result)) {
+                  @case ('none') {
+                    <button
+                      class="btn btn-primary"
+                      (click)="sendRequest(result)"
+                      [disabled]="isLoading(result.id)"
+                    >
+                      Añadir
+                    </button>
+                  }
+                  @case ('pending_sent') {
+                    <span class="status-badge status-pending">Pendiente</span>
+                  }
+                  @case ('pending_received') {
+                    <span class="status-badge status-received">Te ha enviado solicitud</span>
+                  }
+                  @case ('accepted') {
+                    <span class="status-badge status-friend">Amigo</span>
+                  }
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (!searchLoading && searchQuery && searchResults.length === 0) {
+        <p class="search-empty">Sin resultados para "{{ searchQuery }}"</p>
+      }
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ========== SOLICITUDES RECIBIDAS ========== -->
+    @if (pendingReceived.length > 0) {
+      <section class="friends-section">
+        <h2 class="section-title">
+          Solicitudes recibidas
+          <span class="badge-count">{{ pendingReceived.length }}</span>
+        </h2>
+        <div class="friends-list">
+          @for (f of pendingReceived; track f.id) {
+            <div class="user-row" [class.loading]="isLoading(f.id)">
+              <div class="user-avatar" (click)="goToProfile(f.friend_username)">
+                @if (f.friend_avatar) {
+                  <img [src]="f.friend_avatar" [alt]="f.friend_username" />
+                } @else {
+                  <span>{{ avatarInitial(f.friend_username) }}</span>
+                }
+              </div>
+              <div class="user-info" (click)="goToProfile(f.friend_username)">
+                <span class="user-name">{{ f.friend_username }}</span>
+              </div>
+              <div class="user-actions">
+                <button class="btn btn-primary" (click)="accept(f)" [disabled]="isLoading(f.id)">
+                  Aceptar
+                </button>
+                <button class="btn btn-ghost" (click)="remove(f)" [disabled]="isLoading(f.id)">
+                  Rechazar
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+      <hr class="divider" />
+    }
+
+    <!-- ========== MIS AMIGOS ========== -->
+    <section class="friends-section">
+      <h2 class="section-title">
+        Mis amigos
+        @if (friends.length > 0) {
+          <span class="badge-count">{{ friends.length }}</span>
+        }
+      </h2>
+
+      @if (friends.length === 0) {
+        <div class="empty-state">
+          <img class="empty-icon" src="/logo_savepoint_sinfondo.png" alt="" />
+          <p class="empty-title">Aún no tienes amigos</p>
+          <p class="empty-subtitle">Busca jugadores por su nombre de usuario para añadirlos</p>
+        </div>
+      } @else {
+        <div class="friends-grid">
+          @for (f of friends; track f.id; let i = $index) {
+            <div
+              class="friend-card"
+              [class.card-loading]="isLoading(f.id)"
+              [style.animation-delay]="i * 50 + 'ms'"
+              (click)="goToProfile(f.friend_username)"
+            >
+              <div class="friend-card__cover">
+                @if (f.friend_avatar) {
+                  <img [src]="f.friend_avatar" [alt]="f.friend_username" />
+                } @else {
+                  <span class="friend-card__initial">{{ avatarInitial(f.friend_username) }}</span>
+                }
+              </div>
+              <div class="friend-card__body">
+                <p class="friend-card__name">{{ f.friend_username }}</p>
+                <span class="friend-card__label">Amigo</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- ========== SOLICITUDES ENVIADAS ========== -->
+    @if (pendingSent.length > 0) {
+      <hr class="divider" />
+      <section class="friends-section">
+        <h2 class="section-title">
+          Solicitudes enviadas
+          <span class="badge-count">{{ pendingSent.length }}</span>
+        </h2>
+        <div class="friends-grid">
+          @for (f of pendingSent; track f.id; let i = $index) {
+            <div
+              class="friend-card"
+              [class.card-loading]="isLoading(f.id)"
+              [style.animation-delay]="i * 50 + 'ms'"
+              (click)="goToProfile(f.friend_username)"
+            >
+              <div class="friend-card__cover">
+                @if (f.friend_avatar) {
+                  <img [src]="f.friend_avatar" [alt]="f.friend_username" />
+                } @else {
+                  <span class="friend-card__initial">{{ avatarInitial(f.friend_username) }}</span>
+                }
+              </div>
+              <div class="friend-card__body">
+                <p class="friend-card__name">{{ f.friend_username }}</p>
+                <span class="friend-card__label friend-card__label--pending">Pendiente</span>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  }
+
+  @if (friendToRemove) {
+    <app-confirm-modal
+      title="Eliminar amigo"
+      [message]="'¿Quieres eliminar a ' + friendToRemove.friend_username + ' de tus amigos?'"
+      confirmText="Eliminar"
+      cancelText="Cancelar"
+      (confirm)="remove(friendToRemove)"
+      (cancel)="friendToRemove = null"
+    />
+  }
+</div>

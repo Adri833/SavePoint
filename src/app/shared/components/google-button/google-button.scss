@@ -1,10 +1,11 @@
+﻿@use '../../../../styles/colors' as *;
 .google-btn {
   width: 100%;
   padding: 14px;
-  border: 1.5px solid #e0e0e0;
+  border: 1.5px solid $color-text-gray2;
   border-radius: 20px;
-  background: #ffffff;
-  color: #3c3c3c;
+  background: $color-white;
+  color: $color-gray-mid;
   font-size: 15px;
   cursor: pointer;
   display: flex;
@@ -23,9 +24,9 @@
   }
 
   &:hover:not(:disabled) {
-    background: #f5f5f5;
-    border-color: #bbb;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: $color-text-light;
+    border-color: $color-text-placeholder;
+    box-shadow: 0 2px 8px $color-overlay-black-8;
   }
 
   &:disabled {

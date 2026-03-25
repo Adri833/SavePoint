@@ -1,14 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { forkJoin, firstValueFrom } from 'rxjs';
 import { PlaythroughService } from '../../../../services/playtrough.service';
 import { Playthrough } from '../../../../models/playtrough.model';
-import { GamesService } from '../../../../services/games.service';
-import { GameDTO } from '../../../../utils/game-mapper';
 import { PlaythroughDetailModal } from '../../../../shared/components/playthrough-detail-modal/playthrough-detail-modal';
 import { YearSelector } from '../../../../shared/components/year-selector/year-selector';
 import { SearchService } from '../../../../services/search.service';
+import { getPlaythroughState } from '../../../../utils/playthrough-state';
+import { GameDTO } from '../../../../utils/game-mapper';
+import { firstValueFrom, forkJoin } from 'rxjs';
+import { GamesService } from '../../../../services/games.service';
 
 @Component({
   selector: 'app-playthroughs',
@@ -18,7 +19,7 @@ import { SearchService } from '../../../../services/search.service';
   styleUrl: './playthroughs.scss',
 })
 export class Playthroughs implements OnInit {
-  selectedStatus: 'all' | 'playing' | 'finished' | 'platinum' | 'dropped' = 'all';
+  selectedStatus: 'all' | 'playing' | 'finished' | 'platinum' | 'online' | 'dropped' = 'all';
   selectedPlaythrough: Playthrough | null = null;
 
   playthroughs: Playthrough[] = [];
@@ -32,8 +33,8 @@ export class Playthroughs implements OnInit {
 
   constructor(
     private playthroughService: PlaythroughService,
-    private gamesService: GamesService,
     private searchService: SearchService,
+    private gamesService: GamesService,
     private cd: ChangeDetectorRef,
   ) {}
 
@@ -48,21 +49,34 @@ export class Playthroughs implements OnInit {
     try {
       this.playthroughs = await this.playthroughService.getAllByUser();
 
-      if (this.playthroughs.length) {
-        const gameRequests = this.playthroughs.map((p) => this.gamesService.getGameById(p.game_id));
-        const games: GameDTO[] = await firstValueFrom(forkJoin(gameRequests));
-
+      // Fallback para partidas antiguas sin datos de juego
+      const orphans = this.playthroughs.filter((p) => !p.game_name);
+      if (orphans.length) {
+        const requests = orphans.map((p) => this.gamesService.getGameById(p.game_id));
+        const games: GameDTO[] = await firstValueFrom(forkJoin(requests));
         games.forEach((game, i) => {
-          const p = this.playthroughs[i];
-          p.game_name = game.name;
-          p.game_background = game.background_image ?? '';
-          p.game_released = game.released ?? '';
+          orphans[i].game_name = game.name;
+          orphans[i].game_background = game.background_image ?? '';
+          orphans[i].game_released = game.released ?? '';
         });
 
-        this.playthroughs.sort(
-          (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime(),
+        await Promise.all(
+          orphans.map((p) =>
+            this.playthroughService.updateGameInfo(
+              p.id,
+              p.game_name,
+              p.game_background,
+              p.game_released ?? '',
+            ),
+          ),
         );
+      }
 
+      this.playthroughs.sort(
+        (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime(),
+      );
+
+      if (this.playthroughs.length) {
         this.years = this.extractYears(this.playthroughs);
         this.selectedYear = this.years[0];
       }
@@ -94,6 +108,14 @@ export class Playthroughs implements OnInit {
   get filteredPlaythroughs(): Playthrough[] {
     const currentYear = new Date().getFullYear();
 
+    const statusMap: Record<string, string> = {
+      playing: 'playing',
+      platinum: 'platinum',
+      finished: 'completed',
+      online: 'online',
+      dropped: 'abandoned',
+    };
+
     return this.playthroughs.filter((p) => {
       let inYear: boolean;
 
@@ -104,18 +126,9 @@ export class Playthroughs implements OnInit {
           p.started_at.getFullYear() <= this.selectedYear && this.selectedYear <= currentYear;
       }
 
-      let statusMatch = true;
-      if (this.selectedStatus !== 'all') {
-        if (this.selectedStatus === 'platinum') {
-          statusMatch = p.status === 'finished' && p.completed && p.platinum;
-        } else if (this.selectedStatus === 'finished') {
-          statusMatch = p.status === 'finished' && p.completed && !p.platinum;
-        } else if (this.selectedStatus === 'playing') {
-          statusMatch = p.status === 'playing';
-        } else if (this.selectedStatus === 'dropped') {
-          statusMatch = p.status === 'finished' && !p.completed;
-        }
-      }
+      const statusMatch =
+        this.selectedStatus === 'all' ||
+        getPlaythroughState(p).cssClass === statusMap[this.selectedStatus];
 
       return inYear && statusMatch;
     });
@@ -140,13 +153,7 @@ export class Playthroughs implements OnInit {
     }, 10);
   }
 
-  getStatusClass(p: Playthrough) {
-    if (p.status === 'playing') return 'playing';
-    if (p.status === 'finished' && p.completed && p.platinum) return 'platinum';
-    if (p.status === 'finished' && p.completed) return 'completed';
-    if (p.status === 'finished' && !p.completed) return 'dropped';
-    return '';
-  }
+  getState = getPlaythroughState;
 
   openDetailModal(p: Playthrough) {
     this.selectedPlaythrough = p;

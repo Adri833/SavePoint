@@ -1,11 +1,12 @@
+﻿@use '../../../../../styles/colors' as *;
 .home-layout {
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background: radial-gradient(circle at top, #1a1a2e, #0f0f14);
-  color: #ffffff;
+  background: radial-gradient(circle at top, $color-bg-deep, $color-bg-base);
+  color: $color-white;
 }
 
 .body {
@@ -17,5 +18,5 @@
 .content {
   flex: 1;
   overflow-y: auto;
-  background: #0f0f14;
+  background: $color-bg-base;
 }

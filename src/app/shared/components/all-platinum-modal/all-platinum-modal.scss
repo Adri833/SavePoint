@@ -1,0 +1,224 @@
+@use '../../../../styles/colors' as *;
+@use '../../../../styles/mixins' as *;
+
+// ===== Backdrop =====
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 998;
+  animation: fadeIn 0.3s ease-out;
+}
+
+// ===== Modal =====
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  max-height: 80vh;
+  background: $color-bg-base;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+  box-shadow: 0 8px 24px $color-overlay-black-40;
+
+  animation: modalIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  transition: all 0.3s ease-in-out;
+}
+
+// ===== Header =====
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: $color-cyan-alt-70;
+  color: $color-white;
+  z-index: 10;
+
+  h2 {
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+// ===== Content =====
+.modal-content {
+  padding: 12px 16px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  & > * {
+    animation: contentExpand 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.platinum-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+
+  // Animación de cascada para los elementos
+  animation: itemIn 0.4s ease-out both;
+
+  &:hover {
+    background: $color-primary-08;
+  }
+
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.03}s;
+    }
+  }
+}
+
+.item-rank {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: $color-overlay-white-20;
+  min-width: 14px;
+  text-align: center;
+}
+
+.item-cover {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.item-game-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: $color-text-primary;
+}
+
+.item-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: $color-text-faint;
+}
+
+.item-badges {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.badge {
+  font-size: 11px;
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+
+  &.hours {
+    width: 52px;
+    text-align: center;
+    padding: 2px 0;
+    background: $color-overlay-white-5;
+    color: $color-text-faint;
+    border: 1px solid $color-overlay-white-8;
+  }
+}
+
+// ===== SKELETON =====
+.loading-state {
+  animation: fadeIn 0.3s ease-in;
+  .skeleton {
+    @include skeleton;
+    height: 40px;
+    margin-bottom: 8px;
+  }
+}
+
+.error-state,
+.empty-state {
+  color: $color-text-faint;
+  font-size: 13px;
+  text-align: center;
+  padding: 16px 0;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.error-state {
+  color: $color-danger;
+}
+
+
+// ===== ANIMATIONS =====
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes contentExpand {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 200px;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 1000px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes itemIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

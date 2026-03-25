@@ -1,9 +1,45 @@
-a img {
-  width: clamp(24px, 3vw, 32px);
-  height: clamp(24px, 3vw, 32px);
-  transition: transform 0.2s;
-}
+﻿@use '../../../../styles/colors' as *;
 
-a:hover img {
-  transform: scale(1.2);
+a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+
+  img {
+    width: clamp(24px, 3vw, 32px);
+    height: clamp(24px, 3vw, 32px);
+    transition: transform 0.2s;
+  }
+
+  .label {
+    font-size: 13px;
+    color: $color-text-dim;
+    text-align: center;
+    max-height: 40px;
+    overflow: hidden;
+    opacity: 1;
+    transition:
+      opacity 0.15s ease 0.25s,
+      max-height 0.3s ease 0.1s;
+
+    &--hidden {
+      opacity: 0;
+      max-height: 0;
+      pointer-events: none;
+      transition:
+        opacity 0s,
+    }
+  }
+
+  &:hover {
+    img {
+      transform: scale(1.2);
+    }
+
+    .label {
+      color: $color-text-faint;
+    }
+  }
 }

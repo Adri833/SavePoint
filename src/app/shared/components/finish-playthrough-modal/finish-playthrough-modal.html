@@ -35,12 +35,19 @@
       </label>
 
       <label>
+        <input type="checkbox"
+        [(ngModel)]="online" name="online"
+        (change)="onOnlineChange()"
+        />
+        Juego online
+      </label>
+
+      <label>
         <input
           type="checkbox"
           [(ngModel)]="platinum"
           name="platinum"
-          (change)="onPlatinumChange()"
-          [disabled]="!completed"
+          [disabled]="!completed && !online"
         />
         Platino conseguido
       </label>

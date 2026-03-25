@@ -1,0 +1,481 @@
+@use '../../../../../styles/colors' as *;
+@use '../../../../../styles/mixins' as *;
+
+// ========== PAGE ==========
+
+.friends-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  color: $color-white;
+  position: relative;
+  min-height: 80vh;
+}
+
+// ========== DIVIDER ==========
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    $color-primary-20 20%,
+    $color-primary-20 80%,
+    transparent
+  );
+  margin: 32px 0;
+  border: none;
+}
+
+// ========== SECTIONS ==========
+
+.friends-section,
+.search-section {
+  animation: fade-in-up 0.4s ease both;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: $color-text-faint;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-count {
+  background: $color-primary-15;
+  color: $color-text-purple;
+  border: 1px solid $color-primary-25;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 20px;
+  letter-spacing: 0;
+}
+
+// ========== SEARCH ==========
+
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: $color-text-faint;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  background: $color-bg-surface;
+  border: 1px solid $color-primary-15;
+  border-radius: 12px;
+  padding: 11px 40px;
+  font-size: 14px;
+  color: $color-text-primary;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: $color-text-faint;
+  }
+  &:focus {
+    border-color: $color-primary-45;
+  }
+}
+
+.search-clear {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: $color-text-faint;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $color-text-primary;
+  }
+}
+
+.search-spinner-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.search-empty {
+  text-align: center;
+  color: $color-text-faint;
+  font-size: 13px;
+  font-style: italic;
+  padding: 16px 0;
+  margin: 0;
+}
+
+// ========== USER ROW ==========
+
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: $color-overlay-white-3;
+  border: 1px solid $color-overlay-white-5;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    opacity 0.2s;
+  animation: fade-in-up 0.3s ease both;
+
+  &:hover {
+    background: $color-primary-08;
+    border-color: $color-primary-20;
+  }
+  &.loading {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $color-primary-dark, $color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-white;
+  flex-shrink: 0;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px $color-primary-15;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 0 0 2px $color-primary-45;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-text-primary;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s;
+
+  .user-info:hover & {
+    color: $color-white;
+  }
+}
+
+.user-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+// ========== FRIEND CARDS GRID ==========
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.friend-card {
+  display: flex;
+  flex-direction: column;
+  background: $color-overlay-white-3;
+  border: 1px solid $color-overlay-white-5;
+  border-radius: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color 0.15s,
+    opacity 0.2s,
+    transform 0.15s;
+  animation: fade-in-up 0.35s ease both;
+
+  &:hover {
+    border-color: $color-primary-20;
+    transform: translateY(-2px);
+  }
+  &.card-loading {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &__cover {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg, $color-primary-dark, $color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .friend-card:hover & img {
+      transform: scale(1.04);
+    }
+  }
+
+  &__initial {
+    font-size: 32px;
+    font-weight: 700;
+    color: $color-white;
+    user-select: none;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 10px 10px;
+    gap: 2px;
+  }
+
+  &__name {
+    font-size: 13px;
+    font-weight: 600;
+    color: $color-text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    transition: color 0.15s;
+
+    .friend-card:hover & {
+      color: $color-white;
+    }
+  }
+
+  &__label {
+    font-size: 11px;
+    color: $color-text-faint;
+    margin: 0;
+
+    &--pending {
+      color: $color-warning;
+    }
+  }
+}
+
+// ========== STATUS BADGES ==========
+
+.status-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+
+  &.status-pending {
+    background: $color-overlay-white-5;
+    color: $color-text-faint;
+    border: 1px solid $color-overlay-white-8;
+  }
+
+  &.status-received {
+    background: $color-warning-12;
+    color: $color-warning;
+    border: 1px solid $color-warning-35;
+  }
+
+  &.status-friend {
+    background: $color-success-12;
+    color: $color-success;
+    border: 1px solid $color-success-20;
+  }
+}
+
+// ========== BUTTONS ==========
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.2s,
+    opacity 0.2s;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &-primary {
+    background: $color-primary;
+    color: $color-white;
+    &:hover:not(:disabled) {
+      background: $color-primary-dark;
+    }
+  }
+
+  &-ghost {
+    background: $color-primary-08;
+    color: $color-text-primary;
+    border: 1px solid $color-primary-20;
+    &:hover:not(:disabled) {
+      background: $color-primary-20;
+    }
+  }
+}
+
+// ========== SPINNER ==========
+
+.spinner {
+  width: 80px;
+  height: 80px;
+  border: 8px solid $color-overlay-white-20;
+  border-top-color: $color-primary;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  &--sm {
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
+  }
+}
+
+// ========== EMPTY STATE ==========
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 24px;
+  gap: 8px;
+}
+
+.empty-icon {
+  width: 64px;
+  height: auto;
+  filter: grayscale(1) opacity(0.3);
+  margin-bottom: 8px;
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: $color-text-muted;
+  margin: 0;
+}
+
+.empty-subtitle {
+  font-size: 13px;
+  color: $color-text-faint;
+  margin: 0;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+// ========== PAGE LOADING ==========
+
+.page-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ========== ANIMATIONS ==========
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ========== RESPONSIVE ==========
+
+@media (max-width: 700px) {
+  .friends-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .friends-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

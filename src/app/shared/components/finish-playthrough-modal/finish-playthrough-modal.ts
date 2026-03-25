@@ -37,6 +37,7 @@ export class FinishPlaythroughModal implements OnInit {
   hours!: number;
   completed = false;
   platinum = false;
+  online = false;
   notes: string | null = null;
   isLoading = false;
   errorMessage: string | null = null;
@@ -57,6 +58,7 @@ export class FinishPlaythroughModal implements OnInit {
     this.hours = this.playthrough.hours ?? 0;
     this.completed = this.playthrough.completed;
     this.platinum = this.playthrough.platinum;
+    this.online = this.playthrough.online ?? false;
     this.notes = this.playthrough.notes;
 
     // Bloquear scroll del body
@@ -139,6 +141,7 @@ export class FinishPlaythroughModal implements OnInit {
         this.hours,
         this.completed,
         this.platinum,
+        this.online,
         this.notes ?? undefined,
       );
 
@@ -157,14 +160,18 @@ export class FinishPlaythroughModal implements OnInit {
   }
 
   onCompletedChange() {
-    if (!this.completed) {
+    if (this.completed) {
+      this.online = false;
+    } else {
       this.platinum = false;
     }
   }
 
-  onPlatinumChange() {
-    if (this.platinum) {
-      this.completed = true;
+  onOnlineChange() {
+    if (this.online) {
+      this.completed = false;
+    } else {
+      this.platinum = false;
     }
   }
 

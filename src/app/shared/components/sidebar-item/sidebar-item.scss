@@ -1,10 +1,11 @@
+﻿@use '../../../../styles/colors' as *;
 .menu-item {
   position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  color: #fff;
+  color: $color-white;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
@@ -13,8 +14,8 @@
   // ---------------- ICONOS ----------------
   .icon {
     position: relative;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     flex-shrink: 0;
 
     img {
@@ -53,7 +54,7 @@
     top: 0;
     width: 4px;
     height: 100%;
-    background: #7c5cff;
+    background: $color-primary;
     opacity: 0;   
     transform: scaleY(1);   
     transition: opacity 0.25s ease; 
@@ -62,7 +63,7 @@
 
   // ---------------- HOVER ----------------
   &:hover {
-    color: #7c5cff;
+    color: $color-primary;
 
     .icon {
       .icon-outline {
@@ -83,7 +84,7 @@
   // ---------------- ACTIVE ----------------
   &.active,
   :host-context(.active) & {
-    color: #7c5cff;
+    color: $color-primary;
 
     .icon {
       .icon-outline {
@@ -101,10 +102,10 @@
 
     .hover-bg {
       left: 0;
-      background: rgba(124, 92, 255, 0.2);
+      background: $color-primary-20;
       backdrop-filter: blur(8px) saturate(150%);
       -webkit-backdrop-filter: blur(8px) saturate(150%);
-      box-shadow: 0 0 12px rgba(124, 92, 255, 0.25);
+      box-shadow: 0 0 12px $color-primary-25;
     }
   }
 }
@@ -116,8 +117,8 @@
   left: 70px;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(124, 92, 255, 0.9);
-  color: #fff;
+  background: $color-primary-90;
+  color: $color-white;
   padding: 4px 8px;
   font-size: 13px;
   white-space: nowrap;

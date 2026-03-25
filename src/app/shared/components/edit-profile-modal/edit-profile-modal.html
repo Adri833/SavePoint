@@ -1,0 +1,89 @@
+<div class="modal-backdrop" (click)="close()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Editar perfil</h2>
+    </div>
+
+    <div class="modal-body">
+      <!-- Avatar preview -->
+      <div class="avatar-preview-row">
+        <div class="avatar-preview">
+          @if (avatarUrl) {
+            <img class="avatar-preview__img" [src]="avatarUrl" alt="Preview avatar" />
+          } @else {
+            <span>{{ username.charAt(0).toUpperCase() }}</span>
+          }
+        </div>
+        <div class="avatar-preview-hint">
+          <p class="hint-title">Foto de perfil</p>
+          <p class="hint-desc">Pega el enlace de tu imagen</p>
+        </div>
+      </div>
+
+      <!-- Campos -->
+      <div class="field">
+        <label class="field-label" for="avatarUrl">URL de la imagen</label>
+        <input
+          id="avatarUrl"
+          class="field-input"
+          type="url"
+          [(ngModel)]="avatarUrl"
+          placeholder="https://ejemplo.com/foto.jpg"
+        />
+      </div>
+
+      <div class="field">
+        <div class="field-label-row">
+          <label class="field-label" for="username">Nombre de usuario</label>
+          <span class="field-counter" [class.is-limit]="username.length >= 13">
+            {{ username.length }}/15
+          </span>
+        </div>
+        <input
+          id="username"
+          class="field-input"
+          type="text"
+          [(ngModel)]="username"
+          placeholder="Tu nombre de usuario"
+          maxlength="15"
+        />
+        <span class="field-hint">Solo letras, números y guiones bajos.</span>
+      </div>
+
+      <div class="field">
+        <div class="field-label-row">
+          <label class="field-label" for="bio">Bio</label>
+          <span class="field-counter" [class.is-limit]="bioCharCount >= 280">
+            {{ bioCharCount }}/300
+          </span>
+        </div>
+        <textarea
+          #bioTextarea
+          id="bio"
+          class="field-input field-input--textarea"
+          [(ngModel)]="bio"
+          (input)="autoResize($event)"
+          placeholder="Cuéntanos algo sobre ti…"
+          maxlength="300"
+          rows="3"
+        ></textarea>
+      </div>
+
+      @if (errorMessage) {
+        <p class="modal-error">{{ errorMessage }}</p>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" (click)="close()" [disabled]="isLoading">Cancelar</button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="isLoading || !isFormDirty">
+        @if (isLoading) {
+          <span class="spinner"></span>
+          Guardando…
+        } @else {
+          Guardar cambios
+        }
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,4 @@
+﻿@use '../../../../styles/colors' as *;
 .completed-card {
   width: 100%;
   height: 100%;
@@ -17,12 +18,12 @@
 }
 
 .big-number.no-data {
-  color: #666;
+  color: $color-text-dim;
 }
 
 .label {
   margin-bottom: 20px;
-  color: #aaa;
+  color: $color-text-disabled;
   font-size: clamp(1rem, 1.5vw, 4rem);
 }
 
@@ -38,18 +39,19 @@
 .progress-bar {
   height: clamp(12px, 1vw, 14px);
   width: 100%;
-  background-color: #d13625;
+  background-color: $color-danger-dark;
   border-radius: 6px;
   overflow: hidden;
+  display: flex;
   transition: background-color 0.3s ease;
 }
 
 .progress-bar-container.no-data .progress-bar {
-  background-color: #444;
+  background-color: $color-text-dimmest;
 }
 
 .progress-bar-container.no-data .completed {
-  background-color: #555;
+  background-color: $color-text-dimmer;
 }
 
 .progress-bar-container.disabled {
@@ -58,18 +60,30 @@
 
 .completed {
   height: 100%;
-  background-color: #27a14c;
+  background-color: $color-success-dark;
+  transition:
+    width 0.6s ease,
+    background-color 0.3s ease;
+}
+
+.online-seg {
+  height: 100%;
+  background-color: $color-warning;
   transition:
     width 0.6s ease,
     background-color 0.3s ease;
 }
 
 .progress-bar-container:hover .progress-bar {
-  background-color: #f34b35;
+  background-color: $color-danger-warm;
 }
 
 .progress-bar-container:hover .completed {
-  background-color: #31d665;
+  background-color: $color-success-bright;
+}
+
+.progress-bar-container:hover .online-seg {
+  background-color: $color-warning-light;
 }
 
 .tooltip {
@@ -77,8 +91,8 @@
   top: 18px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.85);
-  color: #fff;
+  background-color: $color-overlay-black-85;
+  color: $color-white;
   font-size: 0.75rem;
   padding: 4px 8px;
   border-radius: 4px;
@@ -100,7 +114,7 @@
 .label-skeleton,
 .completed-skeleton {
   border-radius: 4px;
-  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  background: linear-gradient(90deg, $color-gray-dark 25%, $color-gray-mid2 50%, $color-gray-dark 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }
@@ -122,7 +136,7 @@
   width: 100%;
   border-radius: 6px;
   overflow: hidden;
-  background-color: #444;
+  background-color: $color-text-dimmest;
 }
 
 .completed-skeleton {
@@ -138,7 +152,6 @@
     background-position: -200% 0;
   }
 }
-
 
 @media (max-width: 768px) {
   .big-number {

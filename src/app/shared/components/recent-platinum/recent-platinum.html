@@ -1,0 +1,74 @@
+<div class="platinums-widget">
+  <!-- Header -->
+  <div class="widget-header">
+    <div class="header-left">
+      <img class="trophy-icon" src="/trophy-platinum.png" />
+      <h2 class="widget-title">Últimos Platinos</h2>
+    </div>
+    <button class="see-all-btn" (click)="goToAll()">
+      Ver todos
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 8h10M9 4l4 4-4 4" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- List -->
+  @if (!loading && entries.length > 0) {
+    <div class="list-container">
+      @for (e of entries; track e.playthrough.id; let i = $index) {
+        <div class="platinum-item" [style.animation-delay]="animationDelay(i)">
+          <div class="item-rank">{{ totalPlatinums - i }}</div>
+
+          @if (e.gameCover) {
+            <div class="item-cover">
+              <img [src]="e.gameCover" [alt]="e.gameName" loading="lazy" />
+            </div>
+          }
+
+          <div class="item-info">
+            <span class="item-game-name">{{ e.gameName }}</span>
+            <span class="item-date">{{ formatDate(e.playthrough.ended_at) }}</span>
+          </div>
+
+          <div class="item-badges">
+            @if (e.playthrough.hours) {
+              <span class="badge hours">{{ e.playthrough.hours }}h</span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- debajo de tu widget -->
+  <app-all-platinum-modal
+    [userId]="userId"
+    [(show)]="showModal"
+    (closed)="showModal = false"
+  ></app-all-platinum-modal>
+
+  <!-- Empty -->
+  @if (!loading && entries.length === 0) {
+    <div class="empty-state">
+      <img class="empty-icon" src="/logo_savepoint_sinfondo.png" alt="empty-icon" />
+      <p>Aún no tienes ningún platino</p>
+    </div>
+  }
+
+  <!-- Loading skeletons -->
+  @if (loading) {
+    <div class="loading-state">
+      @for (s of skeletons; track s) {
+        <div class="skeleton"></div>
+      }
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error) {
+    <div class="error-state">
+      <p>{{ error }}</p>
+    </div>
+  }
+</div>

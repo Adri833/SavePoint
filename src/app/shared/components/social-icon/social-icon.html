@@ -1,8 +1,4 @@
-<a
-  [href]="href"
-  [attr.target]="target"
-  rel="noopener"
-  [attr.aria-label]="label"
->
+<a [href]="href" [attr.target]="target" rel="noopener" [attr.aria-label]="label">
   <img [src]="icon" [alt]="label" />
+  <span class="label" [class.label--hidden]="!showLabel">{{ label }}</span>
 </a>

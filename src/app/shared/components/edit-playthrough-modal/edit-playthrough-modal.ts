@@ -38,6 +38,7 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
   completed = false;
   platinum = false;
   notes: string | null = null;
+  online = false;
 
   isLoading = false;
   confirmingDelete = false;
@@ -62,6 +63,7 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
     this.hours = this.playthrough.hours ?? 0;
     this.completed = this.playthrough.completed;
     this.platinum = this.playthrough.platinum;
+    this.online = this.playthrough.online ?? false;
     this.notes = this.playthrough.notes;
 
     if (this.playthrough.ended_at) {
@@ -153,6 +155,7 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
         this.isPlaying ? 0 : this.hours,
         this.isPlaying ? false : this.completed,
         this.isPlaying ? false : this.platinum,
+        this.isPlaying ? false : this.online,
         this.notes ?? undefined,
         this.endedAtISO ? new Date(this.endedAtISO) : undefined,
       );
@@ -199,7 +202,19 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
   // ===== FORM HELPERS =====
 
   onCompletedChange() {
-    if (!this.completed) this.platinum = false;
+    if (this.completed) {
+      this.online = false;
+    } else {
+      this.platinum = false;
+    }
+  }
+
+  onOnlineChange() {
+    if (this.online) {
+      this.completed = false;
+    } else {
+      this.platinum = false;
+    }
   }
 
   onPlatinumChange() {

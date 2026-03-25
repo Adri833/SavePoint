@@ -32,16 +32,16 @@ export class PlatinumStats implements OnChanges {
 
   // Numero animado
   private animateCounter(target: number) {
-    const duration = 1200;
+    const duration = 800;
     const start = 0;
     const startTime = performance.now();
 
-    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const easeInOutQuad = (t: number) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeOutCubic(progress);
+      const easedProgress = easeInOutQuad(progress);
 
       this.animatedValue = Math.floor(start + (target - start) * easedProgress);
 

@@ -1,0 +1,207 @@
+// --- Brand / Primary (Purple) ---
+$color-primary: #7c5cff;
+$color-primary-dark: #5b3cc4;
+$color-primary-darker: #4a32a8;
+$color-primary-darkest: #3a2a8c;
+$color-primary-light: #9a8bd6;
+$color-primary-faint: #6a4de0;
+
+// --- Backgrounds (Dark theme) ---
+$color-bg-base: #0f0f14;
+$color-bg-deep: #1a1a2e;
+$color-bg-surface: #141422;
+$color-bg-surface-alt: #1e1e2f;
+$color-bg-card: #2a2a40;
+$color-bg-card-alt: #2a2a3a;
+$color-bg-elevated: #1a1a25;
+$color-bg-overlay: #15152a;
+$color-bg-subtle: #17172d;
+$color-bg-input: #1c1c2b;
+$color-bg-muted: #25253d;
+$color-bg-dark: #121222;
+$color-bg-darker: #121212;
+$color-bg-border: #2b2b45;
+$color-bg-section: #232336;
+$color-bg-deep2: #1c1b30;
+$color-bg-alt2: #35354a;
+
+// --- Foreground / Text ---
+$color-white: #ffffff;
+$color-white-off: #fff;
+$color-text-primary: #e6e6ff;
+$color-text-secondary: #d4d4f0;
+$color-text-muted: #cfcfe6;
+$color-text-faint: #9a9ab5;
+$color-text-disabled: #aaa;
+$color-text-subtle: #888;
+$color-text-dim: #666;
+$color-text-dimmer: #555;
+$color-text-dimmest: #444;
+$color-text-placeholder: #bbb;
+$color-text-dark: #999;
+$color-text-gray: #ddd;
+$color-text-gray2: #e0e0e0;
+$color-text-light: #f5f5f5;
+$color-text-light2: #f5f5ff;
+$color-text-accent: #b8b8ff;
+$color-text-accent2: #c9c2ff;
+$color-text-accent3: #dcdcff;
+$color-text-accent4: #dcdcf5;
+$color-text-accent5: #e0dbff;
+$color-text-purple: #a29bfe;
+
+// --- Accent: Cyan ---
+$color-cyan: #a6ffff;
+$color-cyan-light: #6fd3ff;
+$color-cyan-pure: #00ffff;
+$color-cyan-teal: #00ffd5;
+
+// --- Accent: Blue ---
+$color-blue: #3aa6ff;
+$color-blue-pure: #3498db;
+$color-blue-deep: #002bff;
+
+// --- Semantic: Success (Green) ---
+$color-success: #2ecc71;
+$color-success-dark: #27a14c;
+$color-success-alt: #30a46c;
+$color-success-bright: #31d665;
+
+// --- Semantic: Danger (Red) ---
+$color-danger: #e5484d;
+$color-danger-alt: #ff6b6b;
+$color-danger-dark: #d13625;
+$color-danger-darker: #a72b45;
+$color-danger-darkest: #842236;
+$color-danger-pure: #ff0000;
+$color-danger-vivid: #e74c3c;
+$color-danger-warm: #f34b35;
+
+// --- Semantic: Warning (Orange) ---
+$color-warning: #e06b1a;
+$color-warning-light: #f07830;
+$color-warning-bright: #ff7300;
+$color-warning-yellow: #f1c40f;
+$color-warning-neon: #fffb00;
+
+// --- Grays (misc) ---
+$color-gray-mid: #3c3c3c;
+$color-gray-mid2: #3a3a3a;
+$color-gray-dark: #2a2a2a;
+
+// --- Misc / One-offs ---
+$color-neon-green: #48ff00;
+$color-neon-pink: #ff00c8;
+$color-black: #111;
+$color-black-pure: #222;
+$color-bg-warm-dark: #2a1a0a;
+$color-bg-warm-deep: #162235;
+
+// ============================================================
+// RGBA TOKENS (opacity variants of base colors)
+// ============================================================
+
+// Black overlays
+$color-overlay-black-0: rgba(0, 0, 0, 0);
+$color-overlay-black-8: rgba(0, 0, 0, 0.08);
+$color-overlay-black-10: rgba(0, 0, 0, 0.1);
+$color-overlay-black-15: rgba(0, 0, 0, 0.15);
+$color-overlay-black-30: rgba(0, 0, 0, 0.3);
+$color-overlay-black-35: rgba(0, 0, 0, 0.35);
+$color-overlay-black-40: rgba(0, 0, 0, 0.4);
+$color-overlay-black-50: rgba(0, 0, 0, 0.5);
+$color-overlay-black-55: rgba(0, 0, 0, 0.55);
+$color-overlay-black-60: rgba(0, 0, 0, 0.6);
+$color-overlay-black-70: rgba(0, 0, 0, 0.7);
+$color-overlay-black-85: rgba(0, 0, 0, 0.85);
+$color-overlay-black-100: rgba(0, 0, 0, 1);
+
+// White overlays
+$color-overlay-white-3: rgba(255, 255, 255, 0.03);
+$color-overlay-white-4: rgba(255, 255, 255, 0.04);
+$color-overlay-white-5: rgba(255, 255, 255, 0.05);
+$color-overlay-white-6: rgba(255, 255, 255, 0.06);
+$color-overlay-white-8: rgba(255, 255, 255, 0.08);
+$color-overlay-white-10: rgba(255, 255, 255, 0.1);
+$color-overlay-white-12: rgba(255, 255, 255, 0.12);
+$color-overlay-white-15: rgba(255, 255, 255, 0.15);
+$color-overlay-white-20: rgba(255, 255, 255, 0.2);
+$color-overlay-white-30: rgba(255, 255, 255, 0.3);
+$color-overlay-white-35: rgba(255, 255, 255, 0.35);
+$color-overlay-white-50: rgba(255, 255, 255, 0.5);
+
+// Primary (purple) overlays
+$color-primary-08: rgba(124, 92, 255, 0.08);
+$color-primary-15: rgba(124, 92, 255, 0.15);
+$color-primary-18: rgba(124, 92, 255, 0.18);
+$color-primary-20: rgba(124, 92, 255, 0.2);
+$color-primary-25: rgba(124, 92, 255, 0.25);
+$color-primary-30: rgba(124, 92, 255, 0.3);
+$color-primary-35: rgba(124, 92, 255, 0.35);
+$color-primary-45: rgba(124, 92, 255, 0.45);
+$color-primary-50: rgba(124, 92, 255, 0.5);
+$color-primary-60: rgba(124, 92, 255, 0.6);
+$color-primary-70: rgba(124, 92, 255, 0.7);
+$color-primary-80: rgba(124, 92, 255, 0.8);
+$color-primary-90: rgba(124, 92, 255, 0.9);
+
+// Danger overlays
+$color-danger-08: rgba(229, 72, 77, 0.08);
+$color-danger-35: rgba(229, 72, 77, 0.35);
+$color-danger-alt-08: rgba(255, 107, 107, 0.08);
+$color-danger-alt-12: rgba(255, 107, 107, 0.12);
+$color-danger-alt-22: rgba(255, 107, 107, 0.22);
+$color-danger-alt-30: rgba(255, 107, 107, 0.3);
+$color-danger-alt-50: rgba(255, 107, 107, 0.5);
+$color-danger-red-12: rgba(255, 80, 80, 0.12);
+$color-danger-red-30: rgba(255, 80, 80, 0.3);
+$color-danger-red-50: rgba(255, 80, 80, 0.5);
+
+// Success overlays
+$color-success-12: rgba(46, 204, 113, 0.12);
+$color-success-20: rgba(46, 204, 113, 0.2);
+$color-success-35: rgba(46, 204, 113, 0.35);
+$color-success-50: rgba(46, 204, 113, 0.5);
+$color-success-alt-08: rgba(48, 164, 108, 0.08);
+$color-success-alt-35: rgba(48, 164, 108, 0.35);
+
+// Warning overlays
+$color-warning-12: rgba(224, 107, 26, 0.12);
+$color-warning-35: rgba(224, 107, 26, 0.35);
+$color-warning-50: rgba(224, 107, 26, 0.5);
+$color-warning-55: rgba(224, 107, 26, 0.55);
+
+// Blue overlays
+$color-blue-05: rgba(58, 166, 255, 0.05);
+$color-blue-40: rgba(58, 166, 255, 0.4);
+$color-blue-90: rgba(58, 166, 255, 0.9);
+
+// Cyan overlays
+$color-cyan-30: rgba(166, 255, 255, 0.3);
+$color-cyan-50: rgba(166, 255, 255, 0.5);
+$color-cyan-alt-20: rgba(180, 255, 255, 0.2);
+$color-cyan-alt-50: rgba(180, 255, 255, 0.5);
+$color-cyan-alt-60: rgba(180, 255, 255, 0.6);
+$color-cyan-alt-70: rgba(180, 255, 255, 0.7);
+$color-cyan-alt-90: rgba(180, 255, 255, 0.9);
+
+// Dark bg overlays
+$color-bg-overlay-75: rgba(10, 10, 18, 0.75);
+$color-bg-overlay-90: rgba(10, 10, 18, 0.9);
+$color-bg-overlay-95: rgba(10, 10, 18, 0.95);
+$color-bg-surface-20: rgba(20, 20, 34, 0.2);
+$color-bg-surface-30: rgba(20, 20, 34, 0.3);
+$color-bg-surface-65: rgba(20, 20, 34, 0.65);
+$color-bg-deep-90: rgba(15, 15, 20, 0.9);
+$color-bg-deep-60: rgba(15, 15, 20, 0.6);
+
+// Misc
+$color-purple-alt-40: rgba(106, 92, 255, 0.4);
+$color-purple-alt-60: rgba(106, 92, 255, 0.6);
+$color-purple-dark-40: rgba(108, 92, 231, 0.4);
+$color-purple-faint-40: rgba(91, 60, 196, 0.4);
+$color-success-green-30: rgba(39, 161, 76, 0.3);
+$color-danger-dark-25: rgba(231, 76, 60, 0.25);
+$color-warning-yellow-25: rgba(241, 196, 15, 0.25);
+$color-danger-warm-30: rgba(209, 54, 37, 0.3);
+$color-warning-orange-30: rgba(255, 140, 66, 0.3);

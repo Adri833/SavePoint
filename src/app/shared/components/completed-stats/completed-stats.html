@@ -14,10 +14,11 @@
     <div class="progress-bar-container" [class.no-data]="!hasData" [class.disabled]="!hasData">
       <div class="progress-bar">
         <div class="completed" [style.width.%]="completionRate"></div>
+        <div class="online-seg" [style.width.%]="onlineRate"></div>
       </div>
 
       <div class="tooltip">
-        {{ completionRate.toFixed(0) }}% completado / {{ (100 - completionRate).toFixed(0) }}%
+        {{ completionRate }}% completado · {{ onlineRate }}% online · {{ abandonedRate }}%
         abandonado
       </div>
     </div>

@@ -2,10 +2,7 @@
   <div class="playthrough-history">
     <div class="history-list">
       @for (pt of pastPlaythroughs; track pt.id) {
-        <div
-          class="history-item"
-          [ngClass]="pt.platinum ? 'platinum' : pt.completed ? 'completed' : 'abandoned'"
-        >
+        <div class="history-item" [ngClass]="getState(pt).cssClass">
           <div class="history-top">
             <!-- Editar -->
             <button class="edit-btn" (click)="onEdit(pt)">
@@ -23,11 +20,8 @@
               @if (pt.platinum) {
                 <img src="/trophy-platinum.png" class="platinum-icon" alt="Platino" />
               }
-              <span
-                class="history-status"
-                [ngClass]="{ completed: pt.completed, platinum: pt.platinum }"
-              >
-                {{ pt.platinum ? '100%' : pt.completed ? 'Completada' : 'Abandonada' }}
+              <span class="history-status" [ngClass]="getState(pt).cssClass">
+                {{ getState(pt).label }}
               </span>
             </div>
           </div>

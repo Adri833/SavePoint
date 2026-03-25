@@ -1,7 +1,8 @@
+﻿@use '../../../../styles/colors' as *;
 .year-selector {
   display: flex;
   gap: 8px;
-  background: #1a1a25;
+  background: $color-bg-elevated;
   border-radius: 12px;
   padding: 4px;
 }
@@ -11,7 +12,7 @@
   border-radius: 8px;
   border: none;
   background: transparent;
-  color: #aaa;
+  color: $color-text-disabled;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
@@ -20,13 +21,13 @@
     color 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: #2a2a3a;
-    color: #fff;
+    background: $color-bg-card-alt;
+    color: $color-white;
   }
 
   &.active {
-    background: #3a3a5a;
-    color: #fff;
+    background: $color-bg-card-alt;
+    color: $color-white;
   }
 
   &:disabled {

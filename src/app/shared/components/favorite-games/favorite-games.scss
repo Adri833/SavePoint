@@ -1,0 +1,383 @@
+@use '../../../../styles/colors' as *;
+@use '../../../../styles/mixins' as *;
+
+// ========== SECTION ==========
+
+.favorites {
+  animation: fade-in-up 0.4s 0.1s ease both;
+  position: relative;
+  background: $color-bg-base;
+  padding: 32px 28px;
+  box-sizing: border-box;
+}
+
+.favorites-header {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.favorites-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.favorites-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: $color-white;
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+// ========== GRID ==========
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  position: relative;
+  border-radius: 12px;
+}
+
+.fav-slot {
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  background: $color-bg-surface;
+  border: 1px solid $color-overlay-white-6;
+  transition:
+    border-color 0.2s,
+    transform 0.2s,
+    filter 0.2s,
+    opacity 0.2s;
+
+  &--blurred {
+    filter: blur(3px);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  &:hover {
+    border-color: $color-primary-45;
+    transform: translateY(-2px);
+
+    .fav-empty {
+      color: $color-text-secondary;
+    }
+    .fav-name {
+      font-size: 11px;
+    }
+    .fav-remove {
+      opacity: 1;
+    }
+    .fav-overlay::before {
+      opacity: 1;
+    }
+  }
+}
+
+// ========== COVER ==========
+
+.fav-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+
+  &--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-bg-card;
+  }
+}
+
+.fav-cover-icon {
+  width: 28px;
+  height: 28px;
+  opacity: 0.3;
+}
+
+// ========== OVERLAY ==========
+
+.fav-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 8px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, $color-overlay-black-40 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: inherit;
+  }
+}
+
+.fav-name {
+  position: relative;
+  font-size: 10px;
+  font-weight: 600;
+  color: $color-white;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: font-size 0.2s ease;
+  text-shadow: 0 1px 6px $color-overlay-black-40;
+}
+
+.fav-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: $color-overlay-black-60;
+  border: none;
+  color: $color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    background 0.2s,
+    opacity 0.2s;
+
+  &:hover {
+    background: $color-danger;
+  }
+}
+
+// ========== EMPTY SLOT ==========
+
+.fav-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-faint;
+  transition: color 0.2s;
+}
+
+// ========== SKELETON ==========
+
+.fav-skeleton {
+  @include skeleton;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+// ========== PICKER WRAP ==========
+
+.picker-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+
+  .picker {
+    pointer-events: all;
+  }
+}
+
+// ========== PICKER ==========
+
+.picker {
+  background: $color-bg-surface;
+  border: 1px solid $color-primary-20;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  animation: slide-up 0.25s ease both;
+}
+
+.picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 18px 0;
+}
+
+.picker-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: $color-white;
+}
+
+.picker-search {
+  padding: 14px 18px 0;
+}
+
+.picker-search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.picker-search-icon {
+  position: absolute;
+  left: 12px;
+  display: block;
+  color: $color-text-faint;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.picker-input {
+  width: 100%;
+  background: $color-bg-input;
+  border: 1px solid $color-primary-15;
+  border-radius: 10px;
+  padding: 9px 14px 9px 34px;
+  font-size: 13px;
+  color: $color-text-primary;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: $color-text-faint;
+  }
+  &:focus {
+    border-color: $color-primary-45;
+  }
+}
+
+.picker-results {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  max-height: 340px;
+}
+
+.picker-spinner-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+}
+
+.picker-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid $color-primary-20;
+  border-top-color: $color-primary;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.picker-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $color-primary-08;
+  }
+}
+
+.picker-result-cover {
+  width: 36px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+
+  &--empty {
+    background: $color-bg-card;
+  }
+}
+
+.picker-result-name {
+  font-size: 13px;
+  color: $color-text-primary;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.picker-error {
+  font-size: 12px;
+  color: $color-danger;
+  padding: 8px 18px 0;
+}
+
+.picker-empty,
+.picker-hint {
+  font-size: 13px;
+  color: $color-text-faint;
+  text-align: center;
+  padding: 20px 0;
+  font-style: italic;
+}
+
+// ========== ANIMATIONS ==========
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

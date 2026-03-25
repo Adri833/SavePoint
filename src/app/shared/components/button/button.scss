@@ -1,3 +1,4 @@
+﻿@use '../../../../styles/colors' as *;
 .btn {
   border: none;
   padding: clamp(0.5rem, 1vw, 0.9rem) clamp(2rem, 3vw, 2.5rem);
@@ -13,9 +14,9 @@
 
 /* ---------- PRIMARY ---------- */
 .btn.primary {
-  background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+  background: linear-gradient(135deg, $color-text-light, $color-text-gray2);
   color: black;
-  box-shadow: 0 4px 12px rgba(106, 92, 255, 0.4);
+  box-shadow: 0 4px 12px $color-purple-alt-40;
   font-weight: 700;
   font-size: clamp(0.9rem, 1vw, 1.1rem);
   padding: clamp(0.8rem, 1vw, 1rem) clamp(2rem, 3vw, 2.5rem);
@@ -24,21 +25,21 @@
 }
 
 .btn.primary:hover {
-  box-shadow: 0 6px 20px rgba(106, 92, 255, 0.6);
+  box-shadow: 0 6px 20px $color-purple-alt-60;
   transform: translateY(-2px);
 }
 
 .btn.scrolled.primary {
-  background: linear-gradient(135deg, #5b3cc4, #7c5cff);
+  background: linear-gradient(135deg, $color-primary-dark, $color-primary);
   color: white;
-  box-shadow: 0 2px 8px rgba(124, 92, 255, 0.3);
+  box-shadow: 0 2px 8px $color-primary-30;
 }
 
 /* ---------- GHOST ---------- */
 .btn.ghost {
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: $color-overlay-white-5;
+  color: $color-white;
+  border: 1px solid $color-overlay-white-20;
   font-weight: 600;
   font-size: clamp(0.85rem, 1vw, 1rem);
   padding: clamp(0.7rem, 0.9vw, 0.85rem) clamp(1.8rem, 3vw, 2.2rem);
@@ -48,15 +49,15 @@
 }
 
 .btn.ghost:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: $color-overlay-white-15;
+  border-color: $color-overlay-white-50;
   transform: translateY(-2px);
 }
 
 .btn.scrolled.ghost {
-  background: rgba(0, 0, 0, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #fff;
+  background: $color-overlay-black-10;
+  border-color: $color-overlay-white-30;
+  color: $color-white;
 }
 
 /* ---------- RGB ---------- */
@@ -70,8 +71,8 @@
   font-size: clamp(0.8rem, 1.2vw, 1.2rem);
   border: none;
   outline: none;
-  color: #fff;
-  background: #111;
+  color: $color-white;
+  background: $color-black;
   cursor: pointer;
   position: relative;
   z-index: 0;
@@ -88,15 +89,15 @@
   content: '';
   background: linear-gradient(
     45deg,
-    #ff0000,
-    #ff7300,
-    #fffb00,
-    #48ff00,
-    #00ffd5,
-    #002bff,
-    #7a00ff,
-    #ff00c8,
-    #ff0000
+    $color-danger-pure,
+    $color-warning-bright,
+    $color-warning-neon,
+    $color-neon-green,
+    $color-cyan-teal,
+    $color-blue-deep,
+    $color-primary,
+    $color-neon-pink,
+    $color-danger-pure
   );
   position: absolute;
   top: -3px;
@@ -126,7 +127,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: #222;
+  background: $color-black-pure;
   z-index: -1;
   border-radius: calc(var(--btn-radius) - 2px);
 }

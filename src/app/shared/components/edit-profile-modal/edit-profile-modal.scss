@@ -1,0 +1,263 @@
+@use '../../../../styles/colors' as *;
+
+// ========== BACKDROP ==========
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: $color-overlay-black-60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  animation: fade-in 0.2s ease both;
+}
+
+// ========== MODAL ==========
+
+.modal {
+  background: $color-bg-surface;
+  border: 1px solid $color-primary-20;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  animation: slide-up 0.25s ease both;
+}
+
+// ========== HEADER ==========
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px 0;
+}
+
+.modal-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: $color-white;
+  margin: 0;
+}
+
+// ========== BODY ==========
+
+.modal-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+// ========== AVATAR PREVIEW ==========
+
+.avatar-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar-preview {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $color-primary-dark, $color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: $color-white;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px $color-primary-20;
+  overflow: hidden;
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.avatar-preview-hint {
+  flex: 1;
+}
+
+.hint-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: $color-text-primary;
+  margin-bottom: 3px;
+}
+
+.hint-desc {
+  font-size: 13px;
+  color: $color-text-faint;
+  line-height: 1.5;
+}
+
+// ========== FIELDS ==========
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.field-input {
+  background: $color-bg-input;
+  border: 1px solid $color-primary-15;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: $color-text-primary;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  width: 100%;
+
+  &::placeholder {
+    color: $color-text-faint;
+  }
+
+  &:focus {
+    border-color: $color-primary-45;
+  }
+
+  &--textarea {
+    resize: none;
+    min-height: 80px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+}
+
+.field-hint {
+  font-size: 11px;
+  color: $color-text-faint;
+}
+
+.field-counter {
+  font-size: 11px;
+  color: $color-text-faint;
+  transition: color 0.2s;
+
+  &.is-limit {
+    color: $color-warning;
+  }
+}
+
+// ========== ERROR ==========
+
+.modal-error {
+  font-size: 13px;
+  color: $color-danger;
+  background: $color-danger-08;
+  border: 1px solid $color-danger-35;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+// ========== FOOTER ==========
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 0 24px 22px;
+}
+
+// ========== BUTTONS ==========
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    opacity 0.2s;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &-primary {
+    background: $color-primary;
+    color: $color-white;
+    &:hover:not(:disabled) {
+      background: $color-primary-dark;
+    }
+  }
+
+  &-ghost {
+    background: $color-primary-08;
+    color: $color-text-primary;
+    border: 1px solid $color-primary-20;
+    &:hover:not(:disabled) {
+      background: $color-primary-20;
+    }
+  }
+}
+
+// ========== SPINNER ==========
+
+.spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid $color-overlay-white-30;
+  border-top-color: $color-white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+// ========== ANIMATIONS ==========
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

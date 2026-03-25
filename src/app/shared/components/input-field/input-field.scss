@@ -1,3 +1,4 @@
+﻿@use '../../../../styles/colors' as *;
 .input-container {
   position: relative;
   width: 100%;
@@ -9,23 +10,23 @@
   width: 100%;
   padding: 16px 12px;
   font-size: 14px;
-  border: 1px solid #ddd;
+  border: 1px solid $color-text-gray;
   border-radius: 8px;
-  background: #fff;
+  background: $color-white;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .input-container input:focus {
   outline: none;
-  border-color: var(--input-focus-color, #5b3cc4);
-  box-shadow: 0 0 0 2px rgba(91, 60, 196, 0.4);
+  border-color: var(--input-focus-color, $color-primary-dark);
+  box-shadow: 0 0 0 2px $color-purple-faint-40;
 }
 
 .input-container input::placeholder {
-  color: #aaa;
+  color: $color-text-disabled;
   transition: color 0.3s;
 }
 
 .input-container input:focus::placeholder {
-  color: #3a3a3a;
+  color: $color-gray-mid2;
 }

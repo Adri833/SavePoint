@@ -1,0 +1,19 @@
+@use 'colors' as *;
+
+// ========== SKELETON ==========
+
+@mixin skeleton {
+  background: linear-gradient(
+    110deg,
+    $color-overlay-white-6 25%,
+    $color-overlay-white-12 37%,
+    $color-overlay-white-6 63%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s infinite linear;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-shimmer {
+  to { background-position: -200% 0; }
+}

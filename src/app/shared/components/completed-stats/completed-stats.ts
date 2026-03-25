@@ -9,6 +9,7 @@ import { ChangeDetectorRef, Component, Input, SimpleChanges } from '@angular/cor
 export class CompletedStats {
   @Input() completed = 0;
   @Input() abandoned = 0;
+  @Input() online = 0;
   @Input() loading = false;
 
   animatedCompleted = 0;
@@ -16,16 +17,25 @@ export class CompletedStats {
   constructor(private cdr: ChangeDetectorRef) {}
 
   get hasData(): boolean {
-    return this.completed + this.abandoned > 0;
+    return this.completed + this.abandoned + this.online > 0;
   }
 
   get totalConsidered(): number {
-    return this.completed + this.abandoned;
+    return this.completed + this.abandoned + this.online;
   }
 
   get completionRate(): number {
     if (this.totalConsidered === 0) return 0;
     return Math.round((this.completed / this.totalConsidered) * 100);
+  }
+
+  get onlineRate(): number {
+    if (this.totalConsidered === 0) return 0;
+    return Math.round((this.online / this.totalConsidered) * 100);
+  }
+
+  get abandonedRate(): number {
+    return 100 - this.completionRate - this.onlineRate;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -34,17 +44,17 @@ export class CompletedStats {
     }
   }
 
-  private animateNumber(duration: number = 1200) {
+  private animateNumber(duration: number = 800) {
     const start = 0;
     const end = this.completed;
     const startTime = performance.now();
 
-    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const easeInOutQuad = (t: number) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
     const step = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeOutCubic(progress);
+      const easedProgress = easeInOutQuad(progress);
 
       this.animatedCompleted = Math.floor(easedProgress * (end - start) + start);
 

@@ -1,9 +1,24 @@
-body {
-  background: #121212;
+﻿@use '../../../../styles/colors' as *;
+
+@mixin close-button-size($size) {
+  $cross-width: calc($size / 10);
+
+  width: $size;
+  height: $size;
+
+  .close-button-block {
+    width: $size;
+    height: calc($size / 2);
+
+    &:before,
+    &:after {
+      left: calc(55% - $cross-width);
+      width: $cross-width;
+      height: calc($size * 0.625);
+    }
+  }
 }
 
-$button-size: 40px;
-$close-width: ($button-size / 10);
 .wrapper {
   display: flex;
   align-items: center;
@@ -14,37 +29,46 @@ $close-width: ($button-size / 10);
   display: block;
   background: none;
   border: none;
-  width: $button-size;
-  height: $button-size;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   outline: none;
+
+  // ── Sizes ──
+  &--small {
+    @include close-button-size(32px);
+  }
+  &--medium {
+    @include close-button-size(40px);
+  }
+  &--large {
+    @include close-button-size(56px);
+  }
+
   > div {
     position: relative;
   }
+
   &-block {
-    width: 40px;
-    height: 20px;
     position: relative;
     overflow: hidden;
+
     &:before,
     &:after {
       content: '';
       position: absolute;
       bottom: 0;
-      left: calc(55% - 4px);
       display: block;
-      width: 4px;
-      height: 25px;
       transform-origin: bottom center;
       background: white;
       transition: all ease-out 280ms;
     }
+
     &:last-of-type {
       transform: rotate(180deg);
     }
   }
+
   .in {
     .close-button-block {
       &:before {
@@ -57,10 +81,12 @@ $close-width: ($button-size / 10);
       }
     }
   }
+
   .out {
     position: absolute;
     top: 0;
     left: 0;
+
     .close-button-block {
       &:before {
         transform: translateX(-5px) translateY(5px) rotate(45deg);
@@ -70,6 +96,7 @@ $close-width: ($button-size / 10);
       }
     }
   }
+
   &:hover {
     .in {
       .close-button-block {
@@ -81,6 +108,7 @@ $close-width: ($button-size / 10);
         }
       }
     }
+
     .out {
       .close-button-block {
         &:before {

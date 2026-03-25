@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Search } from './search';
+import { EditProfileModal } from './edit-profile-modal';
 
-describe('Search', () => {
-  let component: Search;
-  let fixture: ComponentFixture<Search>;
+describe('EditProfileModal', () => {
+  let component: EditProfileModal;
+  let fixture: ComponentFixture<EditProfileModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Search]
+      imports: [EditProfileModal]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Search);
+    fixture = TestBed.createComponent(EditProfileModal);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

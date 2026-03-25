@@ -1,3 +1,4 @@
+﻿@use '../../../../../styles/colors' as *;
 .playthroughs-container {
   position: relative;
   padding: 40px;
@@ -16,8 +17,8 @@
     .spinner {
       width: 80px;
       height: 80px;
-      border: 8px solid rgba(255, 255, 255, 0.2);
-      border-top-color: #7c5cff;
+      border: 8px solid $color-overlay-white-20;
+      border-top-color: $color-primary;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -41,9 +42,9 @@
 
     .status-select,
     .year-select {
-      background: #1e1e2f;
+      background: $color-bg-surface-alt;
       color: white;
-      border: 2px solid #2a2a40;
+      border: 2px solid $color-bg-card;
       padding: 10px 16px;
       font-size: 1rem;
       border-radius: 12px;
@@ -52,7 +53,7 @@
 
       &:focus {
         outline: none;
-        border-color: #7c5cff;
+        border-color: $color-primary;
       }
     }
   }
@@ -77,7 +78,7 @@
     .game-card-inner {
       width: 100%;
       position: relative;
-      background: #1e1e2f;
+      background: $color-bg-surface-alt;
       overflow: hidden;
       transition:
         transform 0.25s ease,
@@ -127,7 +128,7 @@
 
             p {
               font-size: 0.9rem;
-              color: #aaa;
+              color: $color-text-disabled;
               margin: 2px 0 0 0;
               white-space: nowrap;
               overflow: hidden;
@@ -153,21 +154,21 @@
           font-weight: 600;
           color: white;
           text-transform: uppercase;
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 3px 6px $color-overlay-black-40;
         }
       }
     }
 
     &.playing {
       box-shadow:
-        0 0 0 3px #7c5cff,
-        0 0 10px rgba(124, 92, 255, 0.3);
+        0 0 0 3px $color-primary,
+        0 0 10px $color-primary-30;
     }
 
     &.platinum {
       box-shadow:
-        0 0 0 3px #a6ffff,
-        0 0 10px rgba(166, 255, 255, 0.3);
+        0 0 0 3px $color-cyan,
+        0 0 10px $color-cyan-30;
       animation:
         fadeUp 0.5s ease forwards,
         platinum-glow 2s infinite ease-in-out;
@@ -176,14 +177,20 @@
 
     &.completed {
       box-shadow:
-        0 0 0 3px #27a14c,
-        0 0 10px rgba(39, 161, 76, 0.3);
+        0 0 0 3px $color-success-dark,
+        0 0 10px $color-success-green-30;
     }
 
-    &.dropped {
+    &.online {
       box-shadow:
-        0 0 0 3px #d13625,
-        0 0 10px rgba(209, 54, 37, 0.3);
+        0 0 0 3px $color-warning,
+        0 0 10px $color-warning-orange-30;
+    }
+
+    &.abandoned {
+      box-shadow:
+        0 0 0 3px $color-danger-dark,
+        0 0 10px $color-danger-warm-30;
     }
   }
 
@@ -194,22 +201,26 @@
   }
 
   .playing-badge {
-    background: #7c5cff;
+    background: $color-primary;
   }
 
   .platinum-badge {
-    background: linear-gradient(135deg, #d4d4f0, #a6ffff, #d4d4f0);
-    color: #1e1e2f !important;
+    background: linear-gradient(135deg, $color-text-secondary, $color-cyan, $color-text-secondary);
+    color: $color-bg-surface-alt !important;
     font-weight: 700;
     text-transform: uppercase;
   }
 
   .completed-badge {
-    background: #27a14c;
+    background: $color-success-dark;
   }
 
-  .dropped-badge {
-    background: #d13625;
+  .online-badge {
+    background: $color-warning;
+  }
+
+  .abandoned-badge {
+    background: $color-danger-dark;
   }
 
   .empty-state {
@@ -235,13 +246,13 @@
     .empty-title {
       font-size: 1.6rem;
       font-weight: 700;
-      color: #fff;
+      color: $color-white;
       margin: 0;
     }
 
     .empty-subtitle {
       font-size: 1rem;
-      color: #666;
+      color: $color-text-dim;
       max-width: 360px;
       line-height: 1.5;
       margin: 0;
@@ -250,7 +261,7 @@
     .empty-btn {
       margin-top: 8px;
       padding: 12px 28px;
-      background: #7c5cff;
+      background: $color-primary;
       color: white;
       border: none;
       border-radius: 12px;
@@ -262,7 +273,7 @@
         transform 0.2s ease;
 
       &:hover {
-        background: #6a4de0;
+        background: $color-primary-faint;
       }
     }
   }
@@ -289,13 +300,13 @@
   0%,
   100% {
     box-shadow:
-      0 0 0 3px #a6ffff,
-      0 0 10px rgba(166, 255, 255, 0.3);
+      0 0 0 3px $color-cyan,
+      0 0 10px $color-cyan-30;
   }
   50% {
     box-shadow:
-      0 0 0 4px #a6ffff,
-      0 0 20px rgba(166, 255, 255, 0.5);
+      0 0 0 4px $color-cyan,
+      0 0 20px $color-cyan-50;
   }
 }
 

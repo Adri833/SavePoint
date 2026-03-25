@@ -44,12 +44,16 @@
         </label>
 
         <label>
+          <input type="checkbox" [(ngModel)]="online" name="online" (change)="onOnlineChange()" />
+          Juego online
+        </label>
+
+        <label>
           <input
             type="checkbox"
             [(ngModel)]="platinum"
             name="platinum"
-            (change)="onPlatinumChange()"
-            [disabled]="!completed"
+            [disabled]="!completed && !online"
           />
           Platino conseguido
         </label>
@@ -59,7 +63,12 @@
     <!-- Notas -->
     <label>
       Notas
-      <textarea [(ngModel)]="notes" name="notes" rows="3"></textarea>
+      <textarea
+        [(ngModel)]="notes"
+        name="notes"
+        rows="3"
+        placeholder="Ej: NG+, comenzado con 10h..."
+      ></textarea>
     </label>
 
     @if (errorMessage) {
