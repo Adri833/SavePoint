@@ -7,15 +7,21 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: $color-bg-overlay-75;
-  backdrop-filter: blur(4px);
   z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow-y: auto;
-
   animation: fadeInOverlay 0.25s ease forwards;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: $color-bg-overlay-75;
+    backdrop-filter: blur(4px);
+    z-index: -1;
+  }
 }
 
 /* ---------- MODAL ---------- */

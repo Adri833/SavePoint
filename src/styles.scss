@@ -37,48 +37,33 @@ body {
    LITEPICKER DARK THEME
 ========================== */
 :root {
-  /* Contenedor y fondo */
-  --litepicker-container-months-color-bg: $color-bg-section;
-  --litepicker-container-months-box-shadow-color: $color-overlay-black-60;
-
-  /* Header */
-  --litepicker-month-header-color: $color-text-primary;
-
-  /* Footer */
-  --litepicker-footer-color-bg: $color-bg-input;
-  --litepicker-footer-box-shadow-color: $color-overlay-black-40;
-
-  /* Tooltip */
-  --litepicker-tooltip-color-bg: $color-bg-card;
-
-  /* Flechas */
-  --litepicker-button-prev-month-color: $color-text-primary;
-  --litepicker-button-next-month-color: $color-text-primary;
-  --litepicker-button-prev-month-color-hover: $color-primary;
-  --litepicker-button-next-month-color-hover: $color-primary;
-
-  /* Días */
-  --litepicker-day-color: $color-text-primary;
-  --litepicker-day-color-hover: $color-white;
-  --litepicker-is-today-color: $color-primary;
-  --litepicker-is-in-range-color: $color-primary-20;
-  --litepicker-is-locked-color: $color-text-dimmer;
-  --litepicker-is-start-color: $color-white;
-  --litepicker-is-start-color-bg: $color-primary;
-  --litepicker-is-end-color: $color-white;
-  --litepicker-is-end-color-bg: $color-primary;
-
-  /* Botones footer */
-  --litepicker-button-cancel-color: $color-text-disabled;
+  --litepicker-container-months-color-bg: #232336;
+  --litepicker-container-months-box-shadow-color: rgba(0, 0, 0, 0.6);
+  --litepicker-month-header-color: #e6e6ff;
+  --litepicker-footer-color-bg: #1c1c2b;
+  --litepicker-footer-box-shadow-color: rgba(0, 0, 0, 0.4);
+  --litepicker-tooltip-color-bg: #2a2a40;
+  --litepicker-button-prev-month-color: #e6e6ff;
+  --litepicker-button-next-month-color: #e6e6ff;
+  --litepicker-button-prev-month-color-hover: #7c5cff;
+  --litepicker-button-next-month-color-hover: #7c5cff;
+  --litepicker-day-color: #e6e6ff;
+  --litepicker-day-color-hover: #ffffff;
+  --litepicker-is-today-color: #7c5cff;
+  --litepicker-is-in-range-color: rgba(124, 92, 255, 0.2);
+  --litepicker-is-locked-color: #444;
+  --litepicker-is-start-color: #ffffff;
+  --litepicker-is-start-color-bg: #7c5cff;
+  --litepicker-is-end-color: #ffffff;
+  --litepicker-is-end-color-bg: #7c5cff;
+  --litepicker-button-cancel-color: #aaa;
   --litepicker-button-cancel-color-bg: transparent;
-  --litepicker-button-apply-color: $color-white;
-  --litepicker-button-apply-color-bg: $color-primary;
-  --litepicker-button-reset-color: $color-text-subtle;
-  --litepicker-button-reset-color-hover: $color-primary;
-
-  /* Día resaltado */
-  --litepicker-highlighted-day-color: $color-white;
-  --litepicker-highlighted-day-color-bg: $color-primary;
+  --litepicker-button-apply-color: #ffffff;
+  --litepicker-button-apply-color-bg: #7c5cff;
+  --litepicker-button-reset-color: #888;
+  --litepicker-button-reset-color-hover: #7c5cff;
+  --litepicker-highlighted-day-color: #ffffff;
+  --litepicker-highlighted-day-color-bg: #7c5cff;
 }
 
 /* ==========================

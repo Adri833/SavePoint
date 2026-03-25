@@ -172,7 +172,9 @@ export class PlaythroughService {
     const user = (await supabase.auth.getUser()).data.user;
     if (!user) throw new Error('Not authenticated');
 
-    if (startedAt > new Date()) {
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+    if (startedAt > today) {
       throw new Error('La fecha de inicio no puede ser futura');
     }
 
@@ -214,6 +216,9 @@ export class PlaythroughService {
     notes?: string,
     ended_at?: Date,
   ) {
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+
     if (platinum && !completed && !online) {
       throw new Error('No se puede tener platino sin historia completada o juego online');
     }
@@ -222,7 +227,7 @@ export class PlaythroughService {
       throw new Error('No puede estar activo historia y online a la vez');
     }
 
-    if (started_at > new Date()) {
+    if (started_at > today) {
       throw new Error('La fecha de inicio no puede ser futura');
     }
 
@@ -230,7 +235,7 @@ export class PlaythroughService {
       throw new Error('La fecha de fin no puede ser anterior a la de inicio');
     }
 
-    if (ended_at && ended_at > new Date()) {
+    if (ended_at && ended_at > today) {
       throw new Error('La fecha de fin no puede ser futura');
     }
 

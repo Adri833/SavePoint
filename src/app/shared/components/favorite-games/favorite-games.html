@@ -5,122 +5,128 @@
   </div>
 
   <div class="favorites-grid">
-    @for (slot of slots; track $index) {
-      <div
-        class="fav-slot"
-        [class.fav-slot--blurred]="pickerSlot !== null"
-        (click)="openPicker($index + 1)"
-      >
-        @if (loading) {
+    @if (loading) {
+      @for (slot of [1, 2, 3, 4, 5, 6]; track $index) {
+        <div class="fav-slot fav-slot--skeleton">
           <div class="skeleton fav-skeleton"></div>
-        } @else if (slot) {
-          @if (slot.game_cover) {
-            <img class="fav-cover" [src]="slot.game_cover" [alt]="slot.game_name" />
-          } @else {
-            <div class="fav-cover fav-cover--empty">
-              <img class="fav-cover-icon" src="/controller.svg" alt="" />
-            </div>
-          }
-          <div class="fav-overlay">
-            <span class="fav-name">{{ slot.game_name }}</span>
-            <button class="fav-remove" (click)="removeGame(slot, $event)" title="Quitar">
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-          </div>
-        } @else {
-          <div class="fav-empty">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-            >
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-          </div>
-        }
-      </div>
-    }
-
-    <!-- PICKER flotando sobre la grid -->
-    @if (pickerSlot !== null) {
-      <div class="picker-wrap" (click)="closePicker()">
-        <div class="picker" (click)="$event.stopPropagation()">
-          <div class="picker-header">
-            <span class="picker-title">Elige un juego</span>
-            <app-close-button size="small" (close)="closePicker()" />
-          </div>
-
-          <div class="picker-search">
-            <div class="picker-search-input-wrap">
-              <svg
-                class="picker-search-icon"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-              <input
-                class="picker-input"
-                type="text"
-                [(ngModel)]="searchQuery"
-                (input)="onSearchInput()"
-                placeholder="Buscar juego…"
-                autofocus
-              />
-            </div>
-          </div>
-
-          @if (pickerError) {
-            <p class="picker-error">{{ pickerError }}</p>
-          }
-
-          <div class="picker-results">
-            @if (searchLoading) {
-              <div class="picker-spinner-wrap">
-                <span class="picker-spinner"></span>
-              </div>
-            } @else if (searchResults.length) {
-              @for (game of searchResults; track game.id) {
-                <button class="picker-result" (click)="selectGame(game)">
-                  @if (game.background_image) {
-                    <img
-                      class="picker-result-cover"
-                      [src]="game.background_image"
-                      [alt]="game.name"
-                    />
-                  } @else {
-                    <div class="picker-result-cover picker-result-cover--empty"></div>
-                  }
-                  <span class="picker-result-name">{{ game.name }}</span>
-                </button>
-              }
-            } @else if (searchQuery.trim()) {
-              <p class="picker-empty">Sin resultados para "{{ searchQuery }}"</p>
+        </div>
+      }
+    } @else {
+      @for (slot of slots; track $index) {
+        <div
+          class="fav-slot fav-slot--loaded"
+          [class.fav-slot--blurred]="pickerSlot !== null"
+          (click)="openPicker($index + 1)"
+          [style.animation-delay]="$index * 40 + 'ms'"
+        >
+          @if (slot) {
+            @if (slot.game_cover) {
+              <img class="fav-cover" [src]="slot.game_cover" [alt]="slot.game_name" />
             } @else {
-              <p class="picker-hint">Escribe el nombre del juego para buscarlo</p>
+              <div class="fav-cover fav-cover--empty">
+                <img class="fav-cover-icon" src="/controller.svg" alt="" />
+              </div>
             }
+            <div class="fav-overlay">
+              <span class="fav-name">{{ slot.game_name }}</span>
+              <button class="fav-remove" (click)="removeGame(slot, $event)" title="Quitar">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+          } @else {
+            <div class="fav-empty">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          }
+        </div>
+      }
+
+      @if (pickerSlot !== null) {
+        <div class="picker-wrap" (click)="closePicker()">
+          <div class="picker" (click)="$event.stopPropagation()">
+            <div class="picker-header">
+              <span class="picker-title">Elige un juego</span>
+              <app-close-button size="small" (close)="closePicker()" />
+            </div>
+
+            <div class="picker-search">
+              <div class="picker-search-input-wrap">
+                <svg
+                  class="picker-search-icon"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input
+                  class="picker-input"
+                  type="text"
+                  [(ngModel)]="searchQuery"
+                  (input)="onSearchInput()"
+                  placeholder="Buscar juego…"
+                  autofocus
+                />
+              </div>
+            </div>
+
+            @if (pickerError) {
+              <p class="picker-error">{{ pickerError }}</p>
+            }
+
+            <div class="picker-results">
+              @if (searchLoading) {
+                <div class="picker-spinner-wrap">
+                  <span class="picker-spinner"></span>
+                </div>
+              } @else if (searchResults.length) {
+                @for (game of searchResults; track game.id) {
+                  <button class="picker-result" (click)="selectGame(game)">
+                    @if (game.background_image) {
+                      <img
+                        class="picker-result-cover"
+                        [src]="game.background_image"
+                        [alt]="game.name"
+                      />
+                    } @else {
+                      <div class="picker-result-cover picker-result-cover--empty"></div>
+                    }
+                    <span class="picker-result-name">{{ game.name }}</span>
+                  </button>
+                }
+              } @else if (searchQuery.trim()) {
+                <p class="picker-empty">Sin resultados para "{{ searchQuery }}"</p>
+              } @else {
+                <p class="picker-hint">Escribe el nombre del juego para buscarlo</p>
+              }
+            </div>
           </div>
         </div>
-      </div>
+      }
     }
   </div>
 </section>
