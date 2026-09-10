@@ -7,21 +7,15 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 100;
+  background: $color-bg-overlay-75;
+  backdrop-filter: blur(4px);
+  z-index: 200;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow-y: auto;
-  animation: fadeInOverlay 0.25s ease forwards;
 
-  &::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: $color-bg-overlay-75;
-    backdrop-filter: blur(4px);
-    z-index: -1;
-  }
+  animation: fadeInOverlay 0.25s ease forwards;
 }
 
 /* ---------- MODAL ---------- */
@@ -36,7 +30,7 @@
   border-radius: 16px;
   width: 400px;
   max-width: 90%;
-  z-index: 101;
+  z-index: 201;
   box-shadow: 0 20px 60px $color-overlay-black-50;
 
   opacity: 0;

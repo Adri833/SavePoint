@@ -33,25 +33,26 @@
         <h1>Biblioteca</h1>
       </div>
 
-      <div class="filters">
-        <select [(ngModel)]="selectedStatus" (change)="onFilterChange()" class="status-select">
-          <option value="all">Todos</option>
-          <option value="playing">En curso</option>
-          <option value="finished">Completado</option>
-          <option value="platinum">100%</option>
-          <option value="online">Online</option>
-          <option value="dropped">Abandonado</option>
-        </select>
-
-        @if (years.length > 0) {
-          <app-year-selector
-            [years]="years"
-            [selectedYear]="selectedYear"
-            [disabled]="loading"
-            (yearChange)="onYearChange($event)"
+      @if (playthroughs.length > 0) {
+        <div class="filters">
+          <!-- Selector de Estado -->
+          <app-desplegable
+            [options]="statusOptions"
+            [value]="selectedStatus"
+            (valueChange)="onStatusChange($event)"
           />
-        }
-      </div>
+
+          <!-- Selector de Año -->
+          @if (yearOptions.length > 0) {
+            <app-desplegable
+              [options]="yearOptions"
+              [value]="selectedYear"
+              [maxHeight]="true"
+              (valueChange)="onYearChange($event)"
+            />
+          }
+        </div>
+      }
     </div>
 
     @if (showGrid && filteredPlaythroughs.length > 0) {

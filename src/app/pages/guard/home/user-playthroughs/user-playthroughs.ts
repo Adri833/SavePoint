@@ -9,13 +9,15 @@ import { GamesService } from '../../../../services/games.service';
 import { GameDTO } from '../../../../utils/game-mapper';
 import { ProfileService } from '../../../../services/profile.service';
 import { Profile } from '../../../../models/profile.model';
-import { YearSelector } from '../../../../shared/components/year-selector/year-selector';
+import { Desplegable, SelectOption } from '../../../../shared/components/desplegable/desplegable';
 import { getPlaythroughState } from '../../../../utils/playthrough-state';
+
+type StatusType = 'all' | 'playing' | 'finished' | 'platinum' | 'online' | 'dropped';
 
 @Component({
   selector: 'app-user-playthroughs',
   standalone: true,
-  imports: [CommonModule, FormsModule, YearSelector, RouterLink],
+  imports: [CommonModule, FormsModule, Desplegable, RouterLink],
   templateUrl: './user-playthroughs.html',
   styleUrl: './user-playthroughs.scss',
 })
@@ -23,13 +25,23 @@ export class Userplaythroughs implements OnInit {
   profile: Profile | null = null;
   playthroughs: Playthrough[] = [];
 
-  selectedStatus: 'all' | 'playing' | 'finished' | 'platinum' | 'online' | 'dropped' = 'all';
+  selectedStatus: StatusType = 'all';
   years: number[] = [];
+  yearOptions: SelectOption<number>[] = [];
   selectedYear!: number;
   showGrid = true;
 
   loading = true;
   error: string | null = null;
+
+  readonly statusOptions: SelectOption<StatusType>[] = [
+    { label: 'Todos', value: 'all' },
+    { label: 'En curso', value: 'playing' },
+    { label: 'Completado', value: 'finished' },
+    { label: '100%', value: 'platinum' },
+    { label: 'Online', value: 'online' },
+    { label: 'Abandonado', value: 'dropped' },
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -58,7 +70,6 @@ export class Userplaythroughs implements OnInit {
       this.playthroughs = await this.playthroughService.getAllByUserId(this.profile.id);
 
       if (this.playthroughs.length) {
-        // Fallback para partidas antiguas sin datos de juego
         const orphans = this.playthroughs.filter((p) => !p.game_name);
         if (orphans.length) {
           const requests = orphans.map((p) => this.gamesService.getGameById(p.game_id));
@@ -87,9 +98,14 @@ export class Userplaythroughs implements OnInit {
 
         this.years = this.extractYears(this.playthroughs);
         this.selectedYear = this.years[0];
+
+        this.yearOptions = this.years.map((y) => ({
+          label: y.toString(),
+          value: y,
+        }));
       }
     } catch (err: any) {
-      this.error = err.message ?? 'Error al cargar la playthroughs';
+      this.error = err.message ?? 'Error al cargar las playthroughs';
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
@@ -140,6 +156,11 @@ export class Userplaythroughs implements OnInit {
 
       return inYear && statusMatch;
     });
+  }
+
+  onStatusChange(status: StatusType) {
+    this.selectedStatus = status;
+    this.onFilterChange();
   }
 
   onYearChange(year: number) {

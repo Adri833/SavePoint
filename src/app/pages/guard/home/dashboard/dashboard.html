@@ -1,12 +1,18 @@
 <div class="dashboard-wrapper">
   <div class="dashboard-header">
-    <app-year-selector
-      [years]="availableYears"
-      [selectedYear]="selectedYear"
-      [disabled]="isLoading"
-      (yearChange)="onYearChange($event)"
-    >
-    </app-year-selector>
+    <h1>Dashboard</h1>
+
+    @if (!isLoading && yearOptions.length > 0) {
+      <div class="filters">
+        <app-desplegable
+          [options]="yearOptions"
+          [value]="selectedYear"
+          [maxHeight]="true"
+          [disabled]="isLoading"
+          (valueChange)="onYearChange($event)"
+        />
+      </div>
+    }
   </div>
 
   <div class="dashboard-split">

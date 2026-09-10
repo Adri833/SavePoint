@@ -4,16 +4,17 @@ import { DashboardService } from '../../../../services/dashboard.service';
 import { DoughnutChart } from '../../../../shared/components/doughnut-chart/doughnut-chart';
 import { CompletedStats } from '../../../../shared/components/completed-stats/completed-stats';
 import { PlatinumStats } from '../../../../shared/components/platinum-stats/platinum-stats';
-import { YearSelector } from '../../../../shared/components/year-selector/year-selector';
+import { Desplegable, SelectOption } from '../../../../shared/components/desplegable/desplegable';
 
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
 @Component({
   selector: 'app-dashboard',
-  imports: [DoughnutChart, CompletedStats, PlatinumStats, YearSelector],
+  imports: [DoughnutChart, CompletedStats, PlatinumStats, Desplegable],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
+
 export class Dashboard implements OnInit {
   gamesData: { gameName: string; hours: number }[] = [];
   completedGames = 0;
@@ -23,6 +24,7 @@ export class Dashboard implements OnInit {
   isLoading = true;
 
   availableYears: number[] = [];
+  yearOptions: SelectOption<number>[] = [];
   selectedYear = new Date().getFullYear();
 
   constructor(
@@ -34,8 +36,15 @@ export class Dashboard implements OnInit {
   async ngOnInit() {
     this.availableYears = await this.dashboardService.getAvailableYears();
 
-    if (this.availableYears.length > 0 && !this.availableYears.includes(this.selectedYear)) {
-      this.selectedYear = this.availableYears[0];
+    if (this.availableYears.length > 0) {
+      if (!this.availableYears.includes(this.selectedYear)) {
+        this.selectedYear = this.availableYears[0];
+      }
+
+      this.yearOptions = this.availableYears.map((y) => ({
+        label: y.toString(),
+        value: y,
+      }));
     }
 
     await this.loadDataForYear(this.selectedYear);

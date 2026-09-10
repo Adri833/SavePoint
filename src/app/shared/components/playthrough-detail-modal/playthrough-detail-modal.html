@@ -23,25 +23,25 @@
         <app-history-game-card
           [pastPlaythroughs]="playthrough"
           (editPlaythrough)="openEditModal($event)"
-        ></app-history-game-card>
-      }
-
-      @if (showEditModal) {
-        <app-edit-playthrough-modal
-          [playthrough]="playthrough"
-          (closed)="closeEditModal()"
-          (updated)="onPlaythroughUpdated($event)"
-          (deleted)="onPlaythroughDeleted()"
-        />
-      }
-
-      @if (showFinishModal) {
-        <app-finish-playthrough-modal
-          [playthrough]="playthrough"
-          (closed)="closeFinishModal()"
-          (finished)="onPlaythroughFinished($event)"
         />
       }
     </div>
   </div>
 </div>
+
+@if (showFinishModal) {
+  <app-finish-playthrough-modal
+    [playthrough]="playthrough"
+    (closed)="closeFinishModal()"
+    (finished)="onPlaythroughFinished($event)"
+  />
+}
+
+@if (showEditModal) {
+  <app-edit-playthrough-modal
+    [playthrough]="playthrough"
+    (closed)="closeEditModal()"
+    (updated)="onPlaythroughUpdated($event)"
+    (deleted)="onPlaythroughDeleted()"
+  />
+}

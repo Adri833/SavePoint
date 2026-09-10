@@ -7,6 +7,7 @@ import { HomeLayout } from './pages/guard/home/home-layout/home-layout';
 import { AuthCallback } from './shared/components/auth-callback/auth-callback';
 import { GuestGuard } from './guards/guest-guard';
 import { ResetPassword } from './pages/public/reset-password/reset-password';
+import { Backlog } from './pages/guard/home/backlog/backlog';
 
 export const routes: Routes = [
   {
@@ -62,6 +63,10 @@ export const routes: Routes = [
         path: 'friends',
         loadComponent: () => import('./pages/guard/home/friends/friends').then((m) => m.Friends),
       },
+      // {
+      //   path: 'backlog',
+      //   loadComponent: () => import('./pages/guard/home/backlog/backlog').then((m) => m.Backlog),
+      // },
       {
         path: 'game/:id',
         loadComponent: () =>

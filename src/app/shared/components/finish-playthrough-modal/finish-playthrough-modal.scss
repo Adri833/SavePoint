@@ -9,7 +9,7 @@
   height: 100vh;
   background: $color-bg-overlay-75;
   backdrop-filter: blur(4px);
-  z-index: 100;
+  z-index: 200;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,7 +30,7 @@
   border-radius: 16px;
   width: 400px;
   max-width: 90%;
-  z-index: 101;
+  z-index: 201;
   box-shadow: 0 20px 60px $color-overlay-black-50;
 
   opacity: 0;

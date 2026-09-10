@@ -103,7 +103,6 @@
       <section class="friends-section">
         <h2 class="section-title">
           Solicitudes recibidas
-          <span class="badge-count">{{ pendingReceived.length }}</span>
         </h2>
         <div class="friends-list">
           @for (f of pendingReceived; track f.id) {
@@ -137,9 +136,6 @@
     <section class="friends-section">
       <h2 class="section-title">
         Mis amigos
-        @if (friends.length > 0) {
-          <span class="badge-count">{{ friends.length }}</span>
-        }
       </h2>
 
       @if (friends.length === 0) {
@@ -180,7 +176,6 @@
       <section class="friends-section">
         <h2 class="section-title">
           Solicitudes enviadas
-          <span class="badge-count">{{ pendingSent.length }}</span>
         </h2>
         <div class="friends-grid">
           @for (f of pendingSent; track f.id; let i = $index) {

@@ -1,4 +1,5 @@
 ﻿@use '../../../../../styles/colors' as *;
+
 .dashboard-wrapper {
   display: flex;
   flex-direction: column;
@@ -12,45 +13,24 @@
 .dashboard-header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 16px 30px 0;
   flex-shrink: 0;
-}
+  min-height: 48px;
+  position: relative;
+  z-index: 200;
 
-.year-selector {
-  display: flex;
-  gap: 8px;
-  background: $color-bg-elevated;
-  border-radius: 12px;
-  padding: 4px;
-}
-
-.year-btn {
-  padding: 6px 16px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  color: $color-text-disabled;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-
-  &:hover:not(:disabled) {
-    background: $color-bg-card-alt;
-    color: $color-white;
+  .filters {
+    display: flex;
+    position: relative;
+    z-index: 210;
+    animation: fadeUp 0.3s ease forwards;
   }
 
-  &.active {
-    background: $color-bg-card-alt;
-    color: $color-white;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
   }
 }
 
@@ -63,6 +43,8 @@
   padding: 20px 30px 30px;
   min-height: 0;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 
   .left {
     flex: 1;
@@ -127,7 +109,20 @@
       }
     }
   }
+}
 
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
   .dashboard-header {
     padding: 12px 12px 0;
     justify-content: center;
