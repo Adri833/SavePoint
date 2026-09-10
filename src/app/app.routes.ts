@@ -63,10 +63,10 @@ export const routes: Routes = [
         path: 'friends',
         loadComponent: () => import('./pages/guard/home/friends/friends').then((m) => m.Friends),
       },
-      {
-        path: 'backlog',
-        loadComponent: () => import('./pages/guard/home/backlog/backlog').then((m) => m.Backlog),
-      },
+      // {
+      //   path: 'backlog',
+      //   loadComponent: () => import('./pages/guard/home/backlog/backlog').then((m) => m.Backlog),
+      // },
       {
         path: 'game/:id',
         loadComponent: () =>

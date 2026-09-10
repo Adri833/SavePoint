@@ -1,7 +1,8 @@
 ﻿@use '../../../../../styles/colors' as *;
+
 .playthroughs-container {
   position: relative;
-  padding: 40px;
+  padding: 0px;
   color: white;
   min-height: 80vh;
 
@@ -28,33 +29,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 16px 30px 0;
     margin-bottom: 30px;
+    min-height: 48px;
+    position: relative;
+    z-index: 200;
 
     h1 {
       font-size: 1.8rem;
       font-weight: 700;
+      margin: 0;
     }
 
     .filters {
       display: flex;
       gap: 1rem;
-    }
-
-    .status-select,
-    .year-select {
-      background: $color-bg-surface-alt;
-      color: white;
-      border: 2px solid $color-bg-card;
-      padding: 10px 16px;
-      font-size: 1rem;
-      border-radius: 12px;
-      text-align: center;
-      cursor: pointer;
-
-      &:focus {
-        outline: none;
-        border-color: $color-primary;
-      }
+      position: relative;
+      z-index: 210;
+      animation: fadeUp 0.3s ease forwards;
     }
   }
 
@@ -63,6 +55,7 @@
     gap: 24px;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     align-items: stretch;
+    padding: 0 30px 30px;
   }
 
   .game-card {
@@ -312,12 +305,13 @@
 
 @media (max-width: 768px) {
   .playthroughs-container {
-    padding: 20px 16px;
+    padding: 0;
 
     .header {
+      padding: 12px 12px 0;
       flex-direction: column;
       align-items: flex-start;
-      gap: 12px;
+      gap: 16px;
       margin-bottom: 20px;
 
       h1 {
@@ -326,13 +320,11 @@
 
       .filters {
         width: 100%;
-        flex-wrap: wrap;
+        gap: 10px;
 
-        .status-select {
+        app-desplegable {
           flex: 1;
-          min-width: 0;
-          font-size: 0.9rem;
-          padding: 8px 12px;
+          width: 100%;
         }
       }
     }

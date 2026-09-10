@@ -1,0 +1,121 @@
+@use '../../../../styles/colors' as *;
+
+:host {
+  display: inline-block;
+}
+
+.custom-dropdown {
+  position: relative;
+
+  .dropdown-trigger {
+    background: $color-bg-surface-alt;
+    color: white;
+    border: 2px solid $color-bg-card;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease;
+
+    &:hover,
+    &.open {
+      border-color: $color-primary;
+      background: lighten($color-bg-surface-alt, 3%);
+    }
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      border-color: $color-bg-card;
+    }
+
+    .chevron {
+      color: $color-text-disabled;
+      transition: transform 0.25s ease;
+    }
+
+    &.open .chevron {
+      transform: rotate(180deg);
+      color: $color-primary;
+    }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-width: max-content;
+    background-color: $color-bg-surface-alt;
+    border: 2px solid $color-bg-card;
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    animation: dropdownFade 0.2s ease forwards;
+    box-sizing: border-box;
+
+    &.scrollable {
+      max-height: 220px;
+      overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: $color-bg-card;
+        border-radius: 4px;
+      }
+    }
+
+    .dropdown-option {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+
+      &:hover {
+        background-color: $color-bg-card;
+        color: $color-primary;
+      }
+
+      &.active {
+        background-color: $color-primary;
+        color: #ffffff;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -94,7 +94,6 @@ export class DoughnutChart implements AfterViewInit, OnDestroy {
     const canvas = this.doughnutCanvas.nativeElement;
     const { width, height } = wrapper.getBoundingClientRect();
 
-    // No crear el chart si el wrapper aún no tiene tamaño real
     if (width < 10 || height < 10) return;
 
     canvas.width = width;
@@ -129,10 +128,14 @@ export class DoughnutChart implements AfterViewInit, OnDestroy {
             enabled: hasData,
             callbacks: {
               label: (context) => {
-                const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+                const rawTotal = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
                 const value = Number(context.raw);
-                const percentage = ((value / total) * 100).toFixed(1);
-                return `${context.label}: ${value}h (${percentage}%)`;
+
+                // Redondeo seguro para el porcentaje y las horas
+                const percentage = rawTotal > 0 ? ((value / rawTotal) * 100).toFixed(1) : '0';
+                const formattedValue = Math.round((value + Number.EPSILON) * 100) / 100;
+
+                return `${context.label}: ${formattedValue}h (${percentage}%)`;
               },
             },
           },
@@ -146,7 +149,8 @@ export class DoughnutChart implements AfterViewInit, OnDestroy {
             const data = chart.data.datasets[0].data as number[];
             const labels = chart.data.labels as string[];
             const isEmpty = labels.length === 1 && labels[0] === 'Sin datos';
-            const totalHours = isEmpty ? 0 : data.reduce((a, b) => a + b, 0);
+            const rawTotalHours = isEmpty ? 0 : data.reduce((a, b) => a + b, 0);
+            const totalHours = Math.round((rawTotalHours + Number.EPSILON) * 100) / 100;
             const totalGames = isEmpty ? 0 : data.filter((d) => d > 0).length;
 
             ctx.save();
@@ -155,6 +159,7 @@ export class DoughnutChart implements AfterViewInit, OnDestroy {
             ctx.font = `${hoursFontSize}px sans-serif`;
             ctx.textBaseline = 'middle';
             ctx.fillStyle = totalGames > 0 ? '#ffffff' : '#777777';
+
             const hoursText = `${totalHours}h`;
             const hoursX = width / 2 - ctx.measureText(hoursText).width / 2;
             const hoursY = height / 2 - 20;
