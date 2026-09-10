@@ -97,7 +97,7 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
 
     this.dateInput.nativeElement.value = this.picker.getStartDate()?.format('DD MMM. YYYY');
 
-    this.picker.on('selected', (date) => {
+    (this.picker as any).on('selected', (date: any) => {
       this.startedAtISO = date.format('YYYY-MM-DD');
       this.dateInput.nativeElement.value = date.format('DD MMM. YYYY');
 
@@ -121,7 +121,7 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
 
       this.endDateInput.nativeElement.value = this.endPicker.getStartDate()?.format('DD MMM. YYYY');
 
-      this.endPicker.on('selected', (date) => {
+      (this.endPicker as any).on('selected', (date: any) => {
         this.endedAtISO = date.format('YYYY-MM-DD');
         this.endDateInput!.nativeElement.value = date.format('DD MMM. YYYY');
       });

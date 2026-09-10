@@ -28,7 +28,7 @@
     &:hover,
     &.open {
       border-color: $color-primary;
-      background: lighten($color-bg-surface-alt, 3%);
+      background: rgba(255, 255, 255, 0.05);
     }
 
     &.disabled {

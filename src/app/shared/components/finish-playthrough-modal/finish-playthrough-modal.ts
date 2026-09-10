@@ -93,7 +93,7 @@ export class FinishPlaythroughModal implements OnInit {
     }
 
     // Actualizar fechas al seleccionar
-    this.picker.on('selected', (date) => {
+    (this.picker as any).on('selected', (date: any) => {
       this.startedAtISO = date.format('YYYY-MM-DD');
       this.startedAtDisplay = date.format('DD MMM. YYYY');
       this.dateInput.nativeElement.value = this.startedAtDisplay;
